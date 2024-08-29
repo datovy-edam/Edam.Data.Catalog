@@ -93,12 +93,10 @@ public class CatalogTreeBuilder
       }
       if (updateItem)
       {
-         var titem = pathItem.Parent.TreeItem;
-
-         pathItem.Item.Name = titem.Name;
-         pathItem.Item.Description = pathItem.Name.
+         pathItem.Item.Name = pathItem.NameFull;
+         pathItem.Item.Description = pathItem.NameFull.
             Replace('.',' ').Replace('/',' ');
-         pathItem.Item.Container = _Service.CurrentContainer;
+         //pathItem.Item.Container = _Service.CurrentContainer;
          pathItem.Item.ContainerId = _Service.CurrentContainer.Id;
          pathItem.Item.FullPath = pathItem.Full;
          pathItem.Item.ItemType = 

@@ -63,6 +63,7 @@ namespace Edam.Data.FileSystemModel
             Extension = String.Empty;
             ExtensionName = String.Empty;
             Name = NameFull;
+            Type = ItemType.Folder;
          }
 
       }

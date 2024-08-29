@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <Reference Include="Edam.Common">
-      <HintPath>..\Edam.Common\Edam.Common\bin\Debug\net8.0\Edam.Common.dll</HintPath>
+      <HintPath>..\..\Edam.Common\Edam.Common\bin\Debug\net8.0\Edam.Common.dll</HintPath>
     </Reference>
   </ItemGroup>
 

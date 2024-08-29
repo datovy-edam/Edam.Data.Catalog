@@ -10,6 +10,12 @@ namespace Edam.Test.FileSystemDb
    [TestClass]
    public class TestModel
    {
+      public const string JSON_FILE_PATH =
+         "J:/Edam.Studio/Projects/HealthCare/Documents";
+      public const string JSON_DATA_PATH =
+         "J:/Edam.Studio/Projects/HealthCare/Documents/schema.json";
+      public const string FILE_TEST_DATA = "{ title: \"HAPPY happy life...\" }";
+
       private string _SessionId = Guid.NewGuid().ToString();
       private ICatalogService GetInstance()
       {
@@ -49,13 +55,17 @@ namespace Edam.Test.FileSystemDb
       public void TestPathParsing()
       {
          FileItemInfo fitem = new FileItemInfo();
-         fitem.FullPath = "C:/Users/esobr/Documents/Edam.Studio";
+         fitem.FullPath = JSON_FILE_PATH;
          CatalogPathItem item = new CatalogPathItem(fitem);
 
-         fitem.FullPath = "C:/Users/esobr/Documents/Edam.Studio/coco.json";
+         fitem.FullPath = JSON_DATA_PATH;
          item = new CatalogPathItem(fitem);
       }
 
+      /// <summary>
+      /// This will build a tree if one exists for the requested container that
+      /// since is not specified is the "default" container.
+      /// </summary>
       [TestMethod]
       public void TestTreeBuilder()
       {
@@ -63,18 +73,32 @@ namespace Edam.Test.FileSystemDb
          catalog.InitializeCatalog("", true);
       }
 
+      /// <summary>
+      /// The following will create catalog items (files) entried if those don't
+      /// exists.  Then retrieve an entry if it exists.
+      /// </summary>
       [TestMethod]
       public void TestPathTreeBuilder()
       {
          CatalogInfo catalog = GetCatalog();
 
+         // get a tree builder
          CatalogTreeBuilder builder = 
             new CatalogTreeBuilder(catalog.CatalogService, catalog);
-         var pitem = builder.GetItem("C:/Users/esobr/Documents/Edam.Studio");
-         pitem = builder.GetItem(
-            "C:/Users/esobr/Documents/Edam.Studio/coco.json");
+
+         // add path items (User, esobr, Documents, and Edam.Studio)
+         var pitem = builder.GetItem(JSON_FILE_PATH);
+
+         // add same items and ending leaf (coco.json)
+         pitem = builder.GetItem(JSON_DATA_PATH);
+
+         // add leaf data...
+         var dataLeaf = catalog.CatalogService.AddDataLeaf(
+            pitem.Item, "TEST", null, FILE_TEST_DATA);
+
+         // remove item and related data for JSON_FILE_PATH...
+         catalog.CatalogService.DeleteItem(pitem.Item.Id);
       }
    }
 
 }
-

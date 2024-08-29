@@ -579,7 +579,6 @@ public class FileSystemInstance : ICatalogService, IDisposable
       }
 
       data.Id = dataId ?? data.Id;
-      data.FileItem = item;
       data.FileItemId = item.Id;
       data.Name = name;
       data.ContentTypeId = data.ContentType.TypeId;
