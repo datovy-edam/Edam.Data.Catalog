@@ -290,7 +290,7 @@ public class CatalogTreeBuilder
    /// </summary>
    /// <param name="path">path to review</param>
    /// <returns>clen-up path is returned</returns>
-   public string GetPath(string? path)
+   public static string GetPath(string? path)
    {
       // is this an empty path? if so, set it up as the root path
       string spath = String.IsNullOrWhiteSpace(path) ? "/" : path;
