@@ -10,9 +10,9 @@ The Catalog Model define the C# classes used in the related CatalogDb EF based i
 
 - A Data (File) is a child of an Item and will hold the binary blob.
   
-The Catalog Tree Builder (see related Catalog Model) can be used to prepare a Tree that could be viewed in Web or other related components.
+The Catalog Tree Builder can be used to prepare a Tree that could be viewed in Web or other related targets.
 
-Try the component by running the provided Test Catalog class / methods.
+Try the component by running the provided Test Catalog various class / methods.
 
 
 

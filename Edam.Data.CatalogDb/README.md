@@ -10,8 +10,10 @@ The Catalog DB is an EF based implementation of a database to manage Containers,
 
 - A Data (File) is a child of an Item and will hold the binary blob.
 
-The Catalog requires that a Connection String is made available to connect to the target databse.  Currently only SQL Client has been tested.  Try the component by running the provided Test Catalog class / methods.
+The Catalog requires that a Connection String is made available to connect to the target database.  Currently only SQL Client has been tested.
 
+Try the component by running the provided Test Catalog various class / methods.  The tests also shows how to get a Catalog Service instance, query files, store data, and build a Tree.
 
+The (separete) "CatalogModel" component library contains a class to help in building a Catalog Tree (see CatalogTreeBuilder) that could be used in Blazor UI libraries to visualize the Tree.
 
 
