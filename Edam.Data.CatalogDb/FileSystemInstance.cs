@@ -1,6 +1,7 @@
 ﻿using Edam.Application;
 using Edam.Data.FileSystemModel;
 using Edam.DataObjects.Medias;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -221,6 +222,22 @@ public class FileSystemInstance : ICatalogService, IDisposable
                    select x;
       var list = ditems.ToList<FileItemInfo>();
       return list.Count > 0 ? list[0] : null;
+   }
+
+   /// <summary>
+   /// Get Branch items (of current container).
+   /// </summary>
+   /// <param name="path">path to fetch first level items</param>
+   /// <returns>Get list of items for given partial path</returns>
+   public List<FileItemInfo?> GetBranch(string? path = null)
+   {
+      var spath = String.IsNullOrWhiteSpace(path) ? "/" : path;
+      var ditems = DbContext.FileItems.
+         Where((x) => EF.Functions.Like(x.FullPath, spath +"%") &&
+            x.Container.Id == CurrentContainer.Id);
+
+      var list = ditems.ToList<FileItemInfo>();
+      return list;
    }
 
    /// <summary>

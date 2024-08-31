@@ -9,7 +9,22 @@
     <Description>The Data Catalog DB library contains an EF implementation for the Catalog MS-SQL database to store definitions for containers, files, file-data and others tables/resources based on path entries, just like a file system.  This allows web-applications and services to have a simulated file-system that gets built as a Tree.  Use the CatalogInstance.GetCatalog to retrieve an instance of the ICatalogService.  Provide the catalog name as "edam.file.system.db" to get an instance.</Description>
     <Copyright></Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl></PackageProjectUrl>
+    <PackageIcon>edam.logo - common.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/datovy-edam/Edam.Data.Catalog</RepositoryUrl>
+    <PackageTags>File System; Blazor Data Store; Catalog Tree</PackageTags>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackAsTool>True</PackAsTool>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="C:\prjs\Edam\Edam.Consoles\Edam.Studio\Edam.Studio\Assets\edam.logo - common.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.2" />
@@ -25,6 +40,13 @@
     <Reference Include="Edam.Data.CatalogModel">
       <HintPath>..\Edam.Data.CatalogModel\bin\Debug\net8.0\Edam.Data.CatalogModel.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

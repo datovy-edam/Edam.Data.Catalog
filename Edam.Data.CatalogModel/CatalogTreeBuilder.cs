@@ -14,6 +14,8 @@ namespace Edam.Data.FileSystemModel;
 /// </summary>
 public class CatalogTreeBuilder
 {
+   private int _ItemCount = 0;
+
    private ICatalogService _Service;
    private CatalogInfo _CatalogInfo;
    private Dictionary<string, CatalogPathItem>? _Dictionary = 
@@ -51,7 +53,15 @@ public class CatalogTreeBuilder
          citem.Icon = CatalogInfo.IconLeaf;
       }
 
+      string[] items = pathItem.Full.Split('/');
+      citem.Level = new short[items.Length];
+      for (int i = 0; i < items.Length; i++)
+      {
+         citem.Level[i] = (short)i;
+      }
+
       pathItem.TreeItem = citem;
+
       return citem;
    }
 
@@ -155,6 +165,7 @@ public class CatalogTreeBuilder
             if (pathItem.TreeItem == null)
             {
                pathItem.TreeItem = CreateItem(pathItem);
+               pathItem.TreeItem.Number = ++_ItemCount;
             }
          }
          else
@@ -217,6 +228,7 @@ public class CatalogTreeBuilder
       if (item.TreeItem == null)
       {
          item.TreeItem = CreateItem(pathItem);
+         item.TreeItem.Number = ++_ItemCount;
       }
 
       // finally add child to parent as needed
@@ -269,25 +281,64 @@ public class CatalogTreeBuilder
    public static CatalogPathItem ToPathItem(FileItemInfo item)
    {
       CatalogPathItem pitem = new CatalogPathItem(item);
-      pitem.TreeItem = CatalogTreeBuilder.CreateItem(pitem);
+      pitem.TreeItem = CreateItem(pitem);
       return pitem;
+   }
+
+   /// <summary>
+   /// Given a path, clean it up and return a valid path.
+   /// </summary>
+   /// <param name="path">path to review</param>
+   /// <returns>clen-up path is returned</returns>
+   public string GetPath(string? path)
+   {
+      // is this an empty path? if so, set it up as the root path
+      string spath = String.IsNullOrWhiteSpace(path) ? "/" : path;
+      var lastChar = spath.Length > 1 ? spath[spath.Length - 1] : ' ';
+      if (lastChar == '/')
+      {
+         spath = spath.Substring(0, spath.Length - 1);
+      }
+
+      // does we have a driver of sort specified?
+      int indx = spath.IndexOf('/');
+      if (indx >= 0)
+      {
+         spath = spath.Substring(indx);
+      }
+
+      return spath;
+   }
+
+   /// <summary>
+   /// Get branch items for current container.
+   /// </summary>
+   /// <param name="path">path to branch</param>
+   public void GetBranch(string? path = null)
+   {
+      string spath = GetPath(path);
+      spath = spath.Length > 1 ? spath + "/" : spath;
+      var items = _Service.GetBranch(spath);
+      foreach (var item in items)
+      {
+         GetItem(item);
+      }
    }
 
    /// <summary>
    /// Build the tree based on the catalog items path
    /// </summary>
-   /// <param name="catalog"></param>
+   /// <param name="resetCatalog">reset catalog [default: true]</param>
    /// <returns>instance of Catalog is returned</returns>
-   public void BuildTree()
+   public void BuildTree(bool resetCatalog = true)
    {
-      _Dictionary = _CatalogInfo.CatalogDictionary;
-      _Dictionary.Clear();
-
-      var items = _Service.GetContainerItems(_Service.CurrentContainer.Id);
-      foreach(var item in items)
+      if (resetCatalog)
       {
-         var pitem = GetItem(item);
+         _Dictionary = _CatalogInfo.CatalogDictionary;
+         _Dictionary.Clear();
       }
+
+      GetBranch();
    }
 
 }

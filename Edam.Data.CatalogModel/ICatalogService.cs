@@ -42,6 +42,8 @@ public interface ICatalogService
    FileItemInfo GetItemByPath(string name);
    void DeleteItem(Guid id);
 
+   List<FileItemInfo?> GetBranch(string? path = null);
+
    FileItemInfo AddItem(FileItemInfo item);
 
    FileItemDataInfo AddItem(FileItemDataInfo item);

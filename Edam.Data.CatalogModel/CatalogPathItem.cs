@@ -40,6 +40,7 @@ namespace Edam.Data.FileSystemModel
       public void FromFullPath(string path)
       {
          base.FromFullPath(path, null);
+         Name = NameFull;
 
          if (Path == null)
          {
@@ -57,13 +58,18 @@ namespace Edam.Data.FileSystemModel
          ContentType = MediaFormat == MediaFormat.Unknown ? String.Empty :
             MediaContentTypeHelper.ToContentTypeText(MediaFormat);
 
-         if (MediaFormat == MediaFormat.Unknown &&
-            !String.IsNullOrWhiteSpace(Extension))
+         if (MediaFormat == MediaFormat.Unknown ||
+            String.IsNullOrWhiteSpace(Extension))
          {
             Extension = String.Empty;
             ExtensionName = String.Empty;
-            Name = NameFull;
             Type = ItemType.Folder;
+            Item.ItemType = TreeItemType.Branch;
+         }
+         else
+         {
+            Type = ItemType.File;
+            Item.ItemType = TreeItemType.Leaf;
          }
 
       }
