@@ -116,6 +116,20 @@ public class FileSystemInstance : ICatalogService, IDisposable
    }
 
    /// <summary>
+   /// Get Root Item of given container.
+   /// </summary>
+   /// <param name="containerId">container id</param>
+   /// <returns>instance of File-Item is returned</returns>
+   public ContainerInfo GetContainer(Guid id)
+   {
+      var items = from item in DbContext.Containers
+                  where item.Id == id
+                  select item;
+      var l = items.ToList();
+      return l.Count > 0 ? l[0] : null;
+   }
+
+   /// <summary>
    /// Get Containers.
    /// </summary>
    /// <returns>list of containers is returned</returns>
@@ -335,7 +349,7 @@ public class FileSystemInstance : ICatalogService, IDisposable
          DbContext.Containers.Add(container);
 
          // add root item
-         CreateRootItem();
+         CreateRootItem(container.Id);
       }
       else if (container.Description != description)
       {
@@ -474,7 +488,8 @@ public class FileSystemInstance : ICatalogService, IDisposable
       FileItemInfo item = null;
       if (root == null)
       {
-         item = CreateBranch(ROOT_ID, "root");
+         item = CreateBranch(ROOT_ID, "root", cid);
+         item.ContainerId = cid;
          item.FullPath = ROOT_PATH;
 
          DbContext.FileItems.Add(item);
@@ -492,15 +507,26 @@ public class FileSystemInstance : ICatalogService, IDisposable
    /// </summary>
    /// <param name="name">name of branch</param>
    /// <param name="description">description</param>
+   /// <param name="containerId">container id [default: CurrentContainer.Id]
+   /// </param>
    /// <returns>file item instance is returned</returns>
    public FileItemInfo CreateBranch(
-      string name, string? description = null)
+      string name, string? description = null, Guid? containerId = null)
    {
       var desc = description ?? name;
       var item = new FileItemInfo();
 
-      item.ContainerId = CurrentContainer.Id;
-      item.Container = CurrentContainer;
+      if (containerId == null)
+      {
+         item.ContainerId = CurrentContainer.Id;
+         item.Container = CurrentContainer;
+      }
+      else
+      {
+         var container = GetContainer(containerId.Value);
+         item.Container = container;
+         item.ContainerId = containerId.Value;
+      }
 
       item.ItemType = DataObjects.Trees.TreeItemType.Branch;
       item.Name = name;

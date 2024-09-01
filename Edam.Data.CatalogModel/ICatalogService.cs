@@ -13,12 +13,14 @@ public interface ICatalogService
    ContainerInfo CurrentContainer { get; set; }
 
    ContainerInfo GetContainer(string? containerId, bool checkId = true);
+   ContainerInfo GetContainer(Guid id);
    ContainerInfo SetContainer(string sessionId, string containerId);
    ContainerInfo EnlistContainer(string containerId, string description);
    ContainerInfo DelistContainer(string containerId);
 
    FileItemInfo CreateRootItem(Guid? containerId = null);
-   FileItemInfo CreateBranch(string name, string? description = null);
+   FileItemInfo CreateBranch(string name, string? description = null, 
+      Guid? containerId = null);
    FileItemInfo CreateLeaf(string path, string name,
       Guid? id = null, string? description = null, string? dataValue = null);
 
