@@ -6,8 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Edam.Data.FileSystemModel;
-
+namespace Edam.Data.CatalogModel;
 
 public class CatalogInfo
 {

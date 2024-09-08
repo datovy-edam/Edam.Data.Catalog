@@ -8,7 +8,7 @@ using Edam.DataObjects.Medias;
 using Edam.DataObjects.Trees;
 using Edam.InOut;
 
-namespace Edam.Data.FileSystemModel
+namespace Edam.Data.CatalogModel
 {
 
    /// <summary>

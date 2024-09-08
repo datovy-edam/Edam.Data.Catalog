@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Edam.DataObjects.Trees;
 using System.Text.Json.Serialization;
 
-namespace Edam.Data.FileSystemModel;
+namespace Edam.Data.CatalogModel;
 
 
 /// <summary>

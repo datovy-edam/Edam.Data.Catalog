@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-using Edam.Data.FileSystemModel;
+using Edam.Data.CatalogModel;
 
 namespace Edam.Data.FileSystemDb;
 

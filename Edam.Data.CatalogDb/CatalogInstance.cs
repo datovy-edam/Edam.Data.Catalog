@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 // -----------------------------------------------------------------------------
-using Edam.Data.FileSystemModel;
+using Edam.Data.CatalogModel;
 using Edam.DataObjects.Entities;
 using Edam.Diagnostics;
 
@@ -31,8 +31,10 @@ public class CatalogInstance : ICatalogs
    /// Get an instance of a Catalog Service by name.
    /// </summary>
    /// <param name="invariantName">name of the catalog instance</param>
+   /// <param name="connectionString">default connection string</param>
    /// <returns>an instance of the requested catalog is returned</returns>
-   public ResultsLog<ICatalogService?> GetCatalog(string invariantName)
+   public ResultsLog<ICatalogService?> GetCatalog(string invariantName,
+      string? connectionString = null)
    {
       ResultsLog<ICatalogService?> results = new ResultsLog<ICatalogService?>();
       if (!String.IsNullOrWhiteSpace(invariantName))
@@ -41,7 +43,7 @@ public class CatalogInstance : ICatalogs
          {
             case EDAM_FILE_SYSTEM_DB:
                _CatalogName = EDAM_FILE_SYSTEM_DB;
-               results.Instance = new FileSystemInstance();
+               results.Instance = new FileSystemInstance(connectionString);
                results.Succeeded();
                break;
             default:

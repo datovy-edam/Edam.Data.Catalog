@@ -1,5 +1,5 @@
 ﻿using Edam.Application;
-using Edam.Data.FileSystemModel;
+using Edam.Data.CatalogModel;
 using Edam.DataObjects.Medias;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -27,15 +27,26 @@ public class FileSystemInstance : ICatalogService, IDisposable
    public ContainerInfo? DefaultContainer { get; set; } = null;
    public ContainerInfo? CurrentContainer { get; set; } = null;
 
+   public string? _defaultConnectionString = null;
+
    #endregion
-   #region -- 4.00 - Initialization and Disposition
+   #region -- 1.50 - Initialization and Disposition
+
+   public FileSystemInstance(string? defaultConnectionString)
+   {
+      _defaultConnectionString = defaultConnectionString;
+   }
 
    /// <summary>
    /// Initialize Repository
    /// </summary>
    private void InitializeDbContext()
    {
-      var connectionString = AppSettings.GetConnectionString("fileSystemDb");
+      var connectionString = 
+         String.IsNullOrWhiteSpace(_defaultConnectionString) ?
+            AppSettings.GetConnectionString("fileSystemDb") :
+            _defaultConnectionString;
+
       DbContext = new FileSystemContext(connectionString);
       if (!DbContext.Database.CanConnect())
       {

@@ -3,7 +3,7 @@ using System.Data.Common;
 using System.Text.Json.Serialization;
 using System.Xml.Linq;
 
-namespace Edam.Data.FileSystemModel;
+namespace Edam.Data.CatalogModel;
 
 /// <summary>
 /// Catalog Item based on the common TreeItem.
