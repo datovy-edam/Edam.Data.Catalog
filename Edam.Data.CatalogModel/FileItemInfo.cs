@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Edam.DataObjects.Trees;
 using Newtonsoft.Json;
 
-namespace Edam.Data.FileSystemModel;
+namespace Edam.Data.CatalogModel;
 
 [Table("FileItem")]
 public class FileItemInfo

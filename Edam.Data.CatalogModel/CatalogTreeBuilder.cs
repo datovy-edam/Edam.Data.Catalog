@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.XPath;
 
-namespace Edam.Data.FileSystemModel;
+namespace Edam.Data.CatalogModel;
 
 /// <summary>
 /// Catalog Tree Builder based on the common TreeItem.

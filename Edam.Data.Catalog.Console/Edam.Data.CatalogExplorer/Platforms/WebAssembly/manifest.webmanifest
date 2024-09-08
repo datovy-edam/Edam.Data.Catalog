@@ -1,0 +1,10 @@
+{
+  "background_color": "#ffffff",
+  "description": "Edam.Data.Catalog.Console",
+  "display": "standalone",
+  "name": "Edam.Data.Catalog.Console",
+  "short_name": "Edam.Data.Catalog.Console",
+  "start_url": "/index.html",
+  "theme_color": "#ffffff",
+  "scope": "/"
+}

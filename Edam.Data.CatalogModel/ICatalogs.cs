@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 // -----------------------------------------------------------------------------
 using Edam.Diagnostics;
 
-namespace Edam.Data.FileSystemModel;
+namespace Edam.Data.CatalogModel;
 
 public interface ICatalogs
 {
@@ -15,5 +15,6 @@ public interface ICatalogs
    string GetDefaultCatalogName();
 
    // instantiate a named catalog service
-   ResultsLog<ICatalogService> GetCatalog(string invariantName);
+   ResultsLog<ICatalogService> GetCatalog(
+      string invariantName, string? connectionString);
 }
