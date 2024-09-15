@@ -56,7 +56,7 @@ functionality applicable to any application.
 
 # What is next?
 
-- Currently the enphasis is on the Windows platform and will keep advancing the
+- Currently the emphasis is on the Windows platform and will keep advancing the
 libraries to that end.
 - As important, libraries to support the API Catalog services hopefully that
 will fully implment the same functionality as made available through the
