@@ -12,6 +12,8 @@ using Edam.Data.CatalogModel;
 using Edam.Data.FileSystemDb;
 using Edam.UI.CatalogExplorer;
 using System.Collections.ObjectModel;
+using Edam.UI.Catalog.Models;
+using Edam.Diagnostics;
 
 // -----------------------------------------------------------------------------
 
@@ -20,14 +22,23 @@ namespace Edam.UI.Catalog.Controls;
 public class CatalogExplorerViewModel : ObservableObject
 {
 
+    public const string CATALOG_INITIALIZED = "CATALOG-INITIALIZED";
+
     private string? _defaultConnectionString;
     private INavigator _navigator;
 
     private CatalogInfo? _Catalog = null;
     private CatalogItem RootItem = null;
 
+    public CatalogInfo? Catalog
+    {
+        get => _Catalog;
+    }
+
     public ObservableCollection<CatalogItem> DataSource { get; set; } =
         new ObservableCollection<CatalogItem>();
+
+    public NotificationEventHandler NotifyEvent { get; set; }
 
     /// <summary>
     /// Initialize Catalog
@@ -45,6 +56,18 @@ public class CatalogExplorerViewModel : ObservableObject
         foreach(var itm in RootItem.Children)
         {
             DataSource.Add(itm);
+        }
+
+        if (NotifyEvent != null)
+        {
+            var args = new NotificationEventArgs
+            {
+                Results = new ResultLog(),
+                EventID = CATALOG_INITIALIZED,
+                Data = _Catalog
+            };
+            args.Results.Succeeded();
+            NotifyEvent(this, args);
         }
     }
 

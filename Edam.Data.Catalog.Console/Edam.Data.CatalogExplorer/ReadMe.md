@@ -47,7 +47,7 @@ Web or other related targets.
 - Currently the enphasis is on the Windows platform and will keep advancing the
 libraries to that end.
 - As important, libraries to support the API Catalog services hopefully that
-will fully implment the same functionality as made available through the
+will fully implement the same functionality as made available through the
 ICatalogService interface will be developed next or in parralel.
 
 
