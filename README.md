@@ -1,14 +1,14 @@
-# Catalog Explorer
+# EDAM Data Catalog - Services Library
 
-This (Uno Platform) console application is provided to demonstrate how to use
-the Edam.Data.Catalog (DB and Model) libraries.
+The Catalog services are similar to a file system to allow the specification of
+paths, folder, and files and store data as binary files or other content-types.
+The Library contains:
 
-The main objective is to have a Catalog of items such as folders and files that
-will work both in Windows or a Browser (WebApplication) with the minimum
-dependencies to other external (paid) services.  The (TO-BE) Catalog Services
-API will include all the expected functionality to allow access to file and
-folders for EDAM Projects but still these services should be independent and its
-functionality applicable to any application.
+- Catalog Db (the Repository)
+- Catalog Model (C# classes and resources)
+- Catalog Explorer (Uno Platform App for testing or adding data)
+
+Details of each follow.
 
 ## Catalog Repository
 This first implementation uses an EF based repository to manage Containers,
@@ -42,7 +42,19 @@ Store as binary (blob) files.
 The Catalog Tree Builder can be used to prepare a Tree that could be viewed in
 Web or other related targets.
 
-## What is next?
+## Catalog Explorer
+
+This (Uno Platform) console application is provided to demonstrate how to use
+the Edam.Data.Catalog (DB and Model) libraries.
+
+The main objective is to have a Catalog of items such as folders and files that
+will work both in Windows or a Browser (WebApplication) with the minimum
+dependencies to other external (paid) services.  The (TO-BE) Catalog Services
+API will include all the expected functionality to allow access to file and
+folders for EDAM Projects but still these services should be independent and its
+functionality applicable to any application.
+
+# What is next?
 
 - Currently the enphasis is on the Windows platform and will keep advancing the
 libraries to that end.
