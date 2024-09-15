@@ -7,6 +7,7 @@ using Edam.Application;
 using Edam.Data.CatalogModel;
 using Edam.Data.FileSystemDb;
 using Edam.Diagnostics;
+using Windows.Storage.Pickers;
 
 namespace Edam.UI.CatalogExplorer;
 

@@ -16,17 +16,14 @@ using Windows.Foundation.Collections;
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace Edam.UI.Catalog.Controls;
-public sealed partial class CatalogPanelControl : UserControl
-{
 
-    public CatalogPanelControl()
+public sealed partial class CatalogContainerControl : UserControl
+{
+    public CatalogContainerViewModel ViewModel { get; set; } = 
+        new CatalogContainerViewModel();
+
+    public CatalogContainerControl()
     {
         this.InitializeComponent();
     }
-
-    public void InitializeCatalog(AppModelState state)
-    {
-        CatalogExplorer.ViewModel.InitializeCatalog(state);
-    }
-
 }

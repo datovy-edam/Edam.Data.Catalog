@@ -50,7 +50,14 @@ public class FileSystemInstance : ICatalogService, IDisposable
       DbContext = new FileSystemContext(connectionString);
       if (!DbContext.Database.CanConnect())
       {
-         DbContext.Database.EnsureCreated();
+         try
+         {
+            DbContext.Database.EnsureCreated();
+         }
+         catch (Exception ex)
+         {
+
+         }
       }
 
       if (!DbContext.ContentTypes.Any())

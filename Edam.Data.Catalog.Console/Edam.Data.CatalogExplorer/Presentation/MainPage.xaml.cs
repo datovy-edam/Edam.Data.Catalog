@@ -14,7 +14,10 @@ public sealed partial class MainPage : Page
         if (DataContext != null)
         {
             _ViewModel = DataContext as MainViewModel;
-            CatalogPanel.InitializeCatalog(_ViewModel.UiScope);
+            if (_ViewModel != null)
+            {
+                CatalogPanel.InitializeCatalog(_ViewModel.UiScope);
+            }
         }
     }
 }

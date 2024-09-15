@@ -9,8 +9,8 @@
   </ItemGroup>
   <ItemGroup>
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-    <PackageVersion Include="CommunityToolkit.WinUI.Controls.Primitives" Version="8.1.240821" />
-    <PackageVersion Include="CommunityToolkit.WinUI.Controls.Sizers" Version="8.1.240821" />
+    <PackageVersion Include="CommunityToolkit.WinUI.Controls.Primitives" Version="8.0.240109" />
+    <PackageVersion Include="CommunityToolkit.WinUI.Controls.Sizers" Version="8.0.240109" />
     <PackageVersion Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
     <PackageVersion Include="Microsoft.Extensions.Localization" Version="8.0.8" />
     <PackageVersion Include="Microsoft.Extensions.Options" Version="8.0.2" />

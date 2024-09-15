@@ -2,6 +2,8 @@ using Uno.Resizetizer;
 
 using Edam.UI.Catalog;
 using Edam.UI.Catalog.Controls;
+using Edam.Data.CatalogModel;
+using Edam.UI.CatalogExplorer;
 
 namespace Edam.Data.Catalog.Console;
 public partial class App : Microsoft.UI.Xaml.Application
@@ -84,7 +86,9 @@ public partial class App : Microsoft.UI.Xaml.Application
                 })
                 .UseNavigation(RegisterRoutes)
             );
+
         MainWindow = builder.Window;
+        AppSession.Window = MainWindow;
 
 #if DEBUG
         MainWindow.EnableHotReload();

@@ -24,10 +24,10 @@ public class CatalogExplorerViewModel : ObservableObject
     private INavigator _navigator;
 
     private CatalogInfo? _Catalog = null;
-    private Item RootItem = null;
+    private CatalogItem RootItem = null;
 
-    public ObservableCollection<Item> DataSource { get; set; } =
-        new ObservableCollection<Item>();
+    public ObservableCollection<CatalogItem> DataSource { get; set; } =
+        new ObservableCollection<CatalogItem>();
 
     /// <summary>
     /// Initialize Catalog
@@ -53,12 +53,12 @@ public class CatalogExplorerViewModel : ObservableObject
     /// </summary>
     /// <param name="item">item to go through children and build tree</param>
     /// <returns>observable item</returns>
-    public Item GetData(CatalogItemInfo item)
+    public CatalogItem GetData(CatalogItemInfo item)
     {
-        Item itm = new Item()
+        CatalogItem itm = new CatalogItem()
         {
             Name = item.Name,
-            CatalogItem = item,
+            Item = item,
         };
 
         foreach(var node in item.Children)
@@ -72,12 +72,12 @@ public class CatalogExplorerViewModel : ObservableObject
 /// <summary>
 /// Observable Item
 /// </summary>
-public class Item
+public class CatalogItem
 {
     public string Name { get; set; }
-    public ObservableCollection<Item> Children { get; set; } = 
-        new ObservableCollection<Item>();
-    public CatalogItemInfo CatalogItem { get; set; }
+    public ObservableCollection<CatalogItem> Children { get; set; } = 
+        new ObservableCollection<CatalogItem>();
+    public CatalogItemInfo Item { get; set; }
 
     public override string ToString()
     {
