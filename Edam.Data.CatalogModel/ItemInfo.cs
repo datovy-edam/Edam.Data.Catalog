@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 namespace Edam.Data.CatalogModel;
 
 [Table("FileItem")]
-public class FileItemInfo
+public class ItemInfo
 {
 
    [Key]
@@ -34,7 +34,7 @@ public class FileItemInfo
 
    public TreeItemType ItemType { get; set; } = TreeItemType.Branch;
 
-   public virtual ICollection<FileItemDataInfo> DataItems { get; set; }
+   public virtual ICollection<ItemDataInfo> DataItems { get; set; }
 
    public DateTimeOffset CreatedDate { get; set; } = DateTimeOffset.Now;
    public DateTimeOffset UpdatedDate { get; set; } = DateTimeOffset.Now;

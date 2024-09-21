@@ -2,25 +2,25 @@
 
 using Edam.Data.CatalogModel;
 
-namespace Edam.Data.FileSystemDb;
+namespace Edam.Data.CatalogDb;
 
-public class FileSystemContext : DbContext
+public class CatalogContext : DbContext
 {
 
    public DbSet<ContentTypeInfo> ContentTypes { get; set; }
    public DbSet<ContainerInfo> Containers { get; set; }
-   public DbSet<FileItemInfo> FileItems { get; set; }
-   public DbSet<FileItemDataInfo> DataItems { get; set; }
+   public DbSet<ItemInfo> FileItems { get; set; }
+   public DbSet<ItemDataInfo> DataItems { get; set; }
 
    public string ConnectionString { get; }
 
-   public FileSystemContext()
+   public CatalogContext()
    {
       //ConnectionString = Configuration["Connnectionstrings:MyConnection"];
       //ConnectionString = LexiconContextHelper.GetConnectionString();
    }
 
-   public FileSystemContext(string connectionString)
+   public CatalogContext(string connectionString)
    {
       ConnectionString = connectionString;
    }
@@ -28,7 +28,7 @@ public class FileSystemContext : DbContext
    protected override void OnModelCreating(ModelBuilder modelBuilder)
    {
       // Configure default schema
-      modelBuilder.HasDefaultSchema("FileSystem");
+      modelBuilder.HasDefaultSchema("Catalog");
    }
 
    // Configures EF to create an SQL database using given connection string

@@ -8,12 +8,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Edam.Data.FileSystemDb;
+namespace Edam.Data.CatalogDb;
 
 /// <summary>
 /// Support for File System repository inqueries and requests.
 /// </summary>
-public class FileSystemInstance : ICatalogService, IDisposable
+public class CatalogServiceInstance : ICatalogService, IDisposable
 {
 
    #region -- 1.00 - Fields and Properties
@@ -22,7 +22,7 @@ public class FileSystemInstance : ICatalogService, IDisposable
    public const string ROOT_ID = "[root]";
    public const string ROOT_PATH = "/";
 
-   private FileSystemContext? DbContext { get; set; } = null;
+   private CatalogContext? DbContext { get; set; } = null;
 
    public ContainerInfo? DefaultContainer { get; set; } = null;
    public ContainerInfo? CurrentContainer { get; set; } = null;
@@ -32,7 +32,7 @@ public class FileSystemInstance : ICatalogService, IDisposable
    #endregion
    #region -- 1.50 - Initialization and Disposition
 
-   public FileSystemInstance(string? defaultConnectionString)
+   public CatalogServiceInstance(string? defaultConnectionString)
    {
       _defaultConnectionString = defaultConnectionString;
    }
@@ -47,7 +47,7 @@ public class FileSystemInstance : ICatalogService, IDisposable
             AppSettings.GetConnectionString("fileSystemDb") :
             _defaultConnectionString;
 
-      DbContext = new FileSystemContext(connectionString);
+      DbContext = new CatalogContext(connectionString);
       if (!DbContext.Database.CanConnect())
       {
          try
@@ -122,7 +122,7 @@ public class FileSystemInstance : ICatalogService, IDisposable
    /// </summary>
    /// <param name="containerId">container id</param>
    /// <returns>instance of File-Item is returned</returns>
-   public FileItemInfo GetContainerRootItem(Guid id)
+   public ItemInfo GetContainerRootItem(Guid id)
    {
       var items = from item in DbContext.FileItems
                   where item.Name == ROOT_ID &&
@@ -161,12 +161,12 @@ public class FileSystemInstance : ICatalogService, IDisposable
    /// </summary>
    /// <param name="id">Container ID</param>
    /// <returns></returns>
-   public List<FileItemInfo> GetContainerItems(Guid id)
+   public List<ItemInfo> GetContainerItems(Guid id)
    {
       var items = from x in DbContext.FileItems
                   where x.ContainerId == id
                   select x;
-      return items.ToList<FileItemInfo>();
+      return items.ToList<ItemInfo>();
    }
 
    /// <summary>
@@ -174,7 +174,7 @@ public class FileSystemInstance : ICatalogService, IDisposable
    /// </summary>
    /// <param name="path">unique full path</param>
    /// <returns>Get list of data items for given file-item id</returns>
-   public FileItemInfo GetItemByPath(string path)
+   public ItemInfo GetItemByPath(string path)
    {
       var ditems = from x in DbContext.FileItems
                    where x.FullPath == path &&
@@ -182,7 +182,7 @@ public class FileSystemInstance : ICatalogService, IDisposable
                    select x;
       if (ditems.Any())
       {
-         return ditems.ToList<FileItemInfo>()[0];
+         return ditems.ToList<ItemInfo>()[0];
       }
       return null;
    }
@@ -192,12 +192,12 @@ public class FileSystemInstance : ICatalogService, IDisposable
    /// </summary>
    /// <param name="id">File-Item ID</param>
    /// <returns>Get list of data items for given file-item id</returns>
-   public List<FileItemDataInfo> GetItemDataByFileItemId(Guid id)
+   public List<ItemDataInfo> GetItemDataByFileItemId(Guid id)
    {
       var ditems = from x in DbContext.DataItems
                    where x.FileItemId == id
                    select x;
-      return ditems.ToList<FileItemDataInfo>();
+      return ditems.ToList<ItemDataInfo>();
    }
 
    /// <summary>
@@ -205,12 +205,12 @@ public class FileSystemInstance : ICatalogService, IDisposable
    /// </summary>
    /// <param name="id">File-Item ID</param>
    /// <returns>Get list of data items for given file-item id</returns>
-   public List<FileItemDataInfo> GetItemData(Guid id)
+   public List<ItemDataInfo> GetItemData(Guid id)
    {
       var ditems = from x in DbContext.DataItems
                    where x.Id == id
                    select x;
-      return ditems.ToList<FileItemDataInfo>();
+      return ditems.ToList<ItemDataInfo>();
    }
 
    /// <summary>
@@ -218,12 +218,12 @@ public class FileSystemInstance : ICatalogService, IDisposable
    /// </summary>
    /// <param name="id">File-Item ID</param>
    /// <returns>Get list of data items for given file-item id</returns>
-   public FileItemDataInfo GetData(Guid id)
+   public ItemDataInfo GetData(Guid id)
    {
       var ditems = from x in DbContext.DataItems
                    where x.Id == id
                    select x;
-      var list = ditems.ToList<FileItemDataInfo>();
+      var list = ditems.ToList<ItemDataInfo>();
       return list.Count > 0 ? list[0] : null;
    }
 
@@ -232,13 +232,13 @@ public class FileSystemInstance : ICatalogService, IDisposable
    /// </summary>
    /// <param name="fileItemId">File-Item ID</param>
    /// <returns>Get list of data items for given file-item id</returns>
-   public FileItemDataInfo GetDataByName(Guid fileItemId, string name)
+   public ItemDataInfo GetDataByName(Guid fileItemId, string name)
    {
       var ditems = from x in DbContext.DataItems
                    where x.FileItemId == fileItemId &&
                          x.Name == name
                    select x;
-      var list = ditems.ToList<FileItemDataInfo>();
+      var list = ditems.ToList<ItemDataInfo>();
       return list.Count > 0 ? list[0] : null;
    }
 
@@ -247,12 +247,12 @@ public class FileSystemInstance : ICatalogService, IDisposable
    /// </summary>
    /// <param name="id">File-Item ID</param>
    /// <returns>Get list of data items for given file-item id</returns>
-   public FileItemInfo? GetItem(Guid id)
+   public ItemInfo? GetItem(Guid id)
    {
       var ditems = from x in DbContext.FileItems
                    where x.Id == id
                    select x;
-      var list = ditems.ToList<FileItemInfo>();
+      var list = ditems.ToList<ItemInfo>();
       return list.Count > 0 ? list[0] : null;
    }
 
@@ -261,14 +261,14 @@ public class FileSystemInstance : ICatalogService, IDisposable
    /// </summary>
    /// <param name="path">path to fetch first level items</param>
    /// <returns>Get list of items for given partial path</returns>
-   public List<FileItemInfo?> GetBranch(string? path = null)
+   public List<ItemInfo?> GetBranch(string? path = null)
    {
       var spath = String.IsNullOrWhiteSpace(path) ? "/" : path;
       var ditems = DbContext.FileItems.
          Where((x) => EF.Functions.Like(x.FullPath, spath +"%") &&
             x.Container.Id == CurrentContainer.Id);
 
-      var list = ditems.ToList<FileItemInfo>();
+      var list = ditems.ToList<ItemInfo>();
       return list;
    }
 
@@ -450,9 +450,9 @@ public class FileSystemInstance : ICatalogService, IDisposable
    /// Add item (or update) in repository based on its full path.
    /// </summary>
    /// <param name="item">add item</param>
-   public FileItemInfo AddItem(FileItemInfo item)
+   public ItemInfo AddItem(ItemInfo item)
    {
-      FileItemInfo ritem;
+      ItemInfo ritem;
       var iitem = GetItemByPath(item.FullPath);
       if (iitem == null)
       {
@@ -498,12 +498,12 @@ public class FileSystemInstance : ICatalogService, IDisposable
    /// </summary>
    /// <param name="containerId">(optional) container id, else the container Id
    /// of the current container is used</param>
-   public FileItemInfo CreateRootItem(Guid? containerId = null)
+   public ItemInfo CreateRootItem(Guid? containerId = null)
    {
       Guid cid = containerId == null ? CurrentContainer.Id : containerId.Value;
       var root = GetContainerRootItem(cid);
 
-      FileItemInfo item = null;
+      ItemInfo item = null;
       if (root == null)
       {
          item = CreateBranch(ROOT_ID, "root", cid);
@@ -528,11 +528,11 @@ public class FileSystemInstance : ICatalogService, IDisposable
    /// <param name="containerId">container id [default: CurrentContainer.Id]
    /// </param>
    /// <returns>file item instance is returned</returns>
-   public FileItemInfo CreateBranch(
+   public ItemInfo CreateBranch(
       string name, string? description = null, Guid? containerId = null)
    {
       var desc = description ?? name;
-      var item = new FileItemInfo();
+      var item = new ItemInfo();
 
       if (containerId == null)
       {
@@ -560,7 +560,7 @@ public class FileSystemInstance : ICatalogService, IDisposable
    /// <param name="name">name of branch</param>
    /// <param name="description">description</param>
    /// <returns>file item instance is returned</returns>
-   public FileItemInfo CreateLeaf(string path, string name,
+   public ItemInfo CreateLeaf(string path, string name,
       Guid? id = null, string? description = null, string? dataValue = null)
    {
       if (String.IsNullOrWhiteSpace(path))
@@ -569,7 +569,7 @@ public class FileSystemInstance : ICatalogService, IDisposable
       }
 
       var desc = description ?? name;
-      var item = new FileItemInfo();
+      var item = new ItemInfo();
 
       item.Id = id ?? item.Id;
       item.ContainerId = CurrentContainer.Id;
@@ -597,9 +597,9 @@ public class FileSystemInstance : ICatalogService, IDisposable
    /// identified by its name.
    /// </summary>
    /// <param name="item">add item</param>
-   public FileItemDataInfo AddItem(FileItemDataInfo item)
+   public ItemDataInfo AddItem(ItemDataInfo item)
    {
-      FileItemDataInfo ritem;
+      ItemDataInfo ritem;
       var ditem = GetDataByName(item.FileItemId, item.Name);
       if (ditem == null)
       {
@@ -628,10 +628,10 @@ public class FileSystemInstance : ICatalogService, IDisposable
    /// <param name="name">unique data item name</param>
    /// <param name="dataId">data id</param>
    /// <returns>file item instance is returned</returns>
-   public FileItemDataInfo CreateDataLeaf(FileItemInfo item, string name,
+   public ItemDataInfo CreateDataLeaf(ItemInfo item, string name,
       Guid? dataId = null)
    {
-      var data = new FileItemDataInfo();
+      var data = new ItemDataInfo();
 
       var ctype = GetContentType(data.ContentType.TypeId);
       if (ctype == null)
@@ -656,7 +656,7 @@ public class FileSystemInstance : ICatalogService, IDisposable
    /// <param name="dataId">data id</param>
    /// <param name="dataValue">data value</param>
    /// <returns>file item instance is returned</returns>
-   public FileItemDataInfo CreateDataLeaf(FileItemInfo item, string name,
+   public ItemDataInfo CreateDataLeaf(ItemInfo item, string name,
       Guid? dataId = null, byte[] dataValue = null)
    {
       var data = CreateDataLeaf(item, name, dataId);
@@ -673,7 +673,7 @@ public class FileSystemInstance : ICatalogService, IDisposable
    /// <param name="dataId">data id</param>
    /// <param name="dataValue">data value</param>
    /// <returns>file item instance is returned</returns>
-   public FileItemDataInfo CreateDataLeaf(FileItemInfo item, string name,
+   public ItemDataInfo CreateDataLeaf(ItemInfo item, string name,
       Guid? dataId = null, string dataValue = null)
    {
       var data = CreateDataLeaf(item, name, dataId);
@@ -689,7 +689,7 @@ public class FileSystemInstance : ICatalogService, IDisposable
    /// <param name="dataId">data id</param>
    /// <param name="dataValue">data value</param>
    /// <returns>file item instance is returned</returns>
-   public FileItemDataInfo AddDataLeaf(FileItemInfo item, string name,
+   public ItemDataInfo AddDataLeaf(ItemInfo item, string name,
       Guid? dataId = null, byte[] dataValue = null)
    {
       var data = CreateDataLeaf(item, name, dataId, dataValue);
@@ -704,7 +704,7 @@ public class FileSystemInstance : ICatalogService, IDisposable
    /// <param name="dataId">data id</param>
    /// <param name="dataValue">data value</param>
    /// <returns>file item instance is returned</returns>
-   public FileItemDataInfo AddDataLeaf(FileItemInfo item, string name,
+   public ItemDataInfo AddDataLeaf(ItemInfo item, string name,
       Guid? dataId = null, string dataValue = null)
    {
       var data = CreateDataLeaf(item, name, dataId, dataValue);

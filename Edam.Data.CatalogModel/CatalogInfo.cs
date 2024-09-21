@@ -49,7 +49,7 @@ public class CatalogInfo
    /// File based Root item
    /// </summary>
    public CatalogPathItem RootPathItem { get; set; }
-   public FileItemInfo RootFileItem
+   public ItemInfo RootFileItem
    {
       get { return RootPathItem.Item; }
    }

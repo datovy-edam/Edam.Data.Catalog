@@ -9,7 +9,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 
 using Edam.Data.CatalogModel;
-using Edam.Data.FileSystemDb;
+using Edam.Data.CatalogDb;
 using Edam.UI.CatalogExplorer;
 using System.Collections.ObjectModel;
 using Edam.UI.Catalog.Models;

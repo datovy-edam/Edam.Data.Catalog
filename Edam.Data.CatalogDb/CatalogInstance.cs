@@ -9,7 +9,7 @@ using Edam.Data.CatalogModel;
 using Edam.DataObjects.Entities;
 using Edam.Diagnostics;
 
-namespace Edam.Data.FileSystemDb;
+namespace Edam.Data.CatalogDb;
 
 public class CatalogInstance : ICatalogs
 {
@@ -43,7 +43,7 @@ public class CatalogInstance : ICatalogs
          {
             case EDAM_FILE_SYSTEM_DB:
                _CatalogName = EDAM_FILE_SYSTEM_DB;
-               results.Instance = new FileSystemInstance(connectionString);
+               results.Instance = new CatalogServiceInstance(connectionString);
                results.Succeeded();
                break;
             default:

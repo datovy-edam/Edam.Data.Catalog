@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Edam.Data.CatalogModel;
 
 [Table("FileItemData")]
-public class FileItemDataInfo
+public class ItemDataInfo
 {
    public const string PARTITION_DEFAULT = "default";
 
@@ -20,7 +20,7 @@ public class FileItemDataInfo
    public Guid FileItemId { get; set; }
 
    [Required]
-   public FileItemInfo FileItem { get; set; }
+   public ItemInfo FileItem { get; set; }
 
    [MaxLength(80)]
    public string PartitionId { get; set; } = PARTITION_DEFAULT;

@@ -71,9 +71,9 @@ public class CatalogTreeBuilder
    /// <param name="item"></param>
    /// <param name="path"></param>
    /// <returns></returns>
-   private FileItemInfo CreateFileItem(CatalogItemInfo item, string path)
+   private ItemInfo CreateFileItem(CatalogItemInfo item, string path)
    {
-      FileItemInfo pitem = new FileItemInfo();
+      ItemInfo pitem = new ItemInfo();
       pitem.Name = item.Name;
       pitem.Description = item.Title;
       pitem.ItemType = item.Type == TreeItemType.Branch ?
@@ -95,7 +95,7 @@ public class CatalogTreeBuilder
    private void UpdateRepository(CatalogPathItem pathItem, 
       bool updateParent, bool updateItem)
    {
-      FileItemInfo item;
+      ItemInfo item;
       if (updateParent)
       {
          item = CreateFileItem(
@@ -151,7 +151,7 @@ public class CatalogTreeBuilder
          }
          
          // add branch to repository
-         FileItemInfo item = _Service.CreateBranch(name);
+         ItemInfo item = _Service.CreateBranch(name);
          item.FullPath = path;
          item = _Service.AddItem(item);
 
@@ -252,7 +252,7 @@ public class CatalogTreeBuilder
    /// </summary>
    /// <param name="item">file item</param>
    /// <returns>instance of catalog item is returned</returns>
-   public CatalogPathItem GetItem(FileItemInfo item)
+   public CatalogPathItem GetItem(ItemInfo item)
    {
       var pitem = new CatalogPathItem(item);
       var citem = GetItem(pitem);
@@ -266,7 +266,7 @@ public class CatalogTreeBuilder
    /// <returns>instance of catalog item is returned</returns>
    public CatalogPathItem GetItem(string fullPath)
    {
-      FileItemInfo fitem = new FileItemInfo();
+      ItemInfo fitem = new ItemInfo();
       fitem.FullPath = fullPath;
       CatalogPathItem item = new CatalogPathItem(fitem);
       var citem = GetItem(item);
@@ -278,7 +278,7 @@ public class CatalogTreeBuilder
    /// </summary>
    /// <param name="item">file item to convert</param>
    /// <returns>instance of CatalogItemInfo is returned</returns>
-   public static CatalogPathItem ToPathItem(FileItemInfo item)
+   public static CatalogPathItem ToPathItem(ItemInfo item)
    {
       CatalogPathItem pitem = new CatalogPathItem(item);
       pitem.TreeItem = CreateItem(pitem);

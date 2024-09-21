@@ -18,7 +18,7 @@ namespace Edam.Data.CatalogModel
    {
       public MediaFormat MediaFormat { get; set; }
       public string ContentType { get; set; }
-      public FileItemInfo Item { get; private set; }
+      public ItemInfo Item { get; private set; }
       public CatalogItemInfo? TreeItem { get; set; } = null;
 
       public new CatalogPathItem? Parent { get; set; } = null;
@@ -27,7 +27,7 @@ namespace Edam.Data.CatalogModel
       /// Initialize a catalog path based on a file item.
       /// </summary>
       /// <param name="item"></param>
-      public CatalogPathItem(FileItemInfo item)
+      public CatalogPathItem(ItemInfo item)
       {
          Item = item;
          FromFullPath(Item.FullPath);

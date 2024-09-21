@@ -35,7 +35,7 @@ public class ContainerInfo: ITreeContainer
    public string ContentType { get; set; } = SCHEMA_CONTENT_TYPE_JSON;
    public string Catalog { get; set; } = "{}";
 
-   public virtual ICollection<FileItemInfo> Items { get; set; }
+   public virtual ICollection<ItemInfo> Items { get; set; }
 
    public DateTimeOffset CreatedDate { get; set; } = DateTimeOffset.Now;
    public DateTimeOffset UpdatedDate { get; set; } = DateTimeOffset.Now;
