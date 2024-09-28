@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Edam.DataObjects.Requests;
+
 namespace Edam.Data.CatalogModel;
 
 public interface ICatalogService
@@ -13,7 +15,7 @@ public interface ICatalogService
    ContainerInfo CurrentContainer { get; set; }
 
    ContainerInfo GetContainer(string? containerId, bool checkId = true);
-   ContainerInfo GetContainer(Guid id);
+   ContainerInfo GetContainer(Guid containerId);
    ContainerInfo SetContainer(string sessionId, string containerId);
    ContainerInfo EnlistContainer(string containerId, string description);
    ContainerInfo DelistContainer(string containerId);
@@ -29,29 +31,24 @@ public interface ICatalogService
    ItemDataInfo CreateDataLeaf(ItemInfo item, string name,
       Guid? dataId = null, string dataValue = null);
 
-   ItemDataInfo AddDataLeaf(ItemInfo item, string name,
-      Guid? dataId = null, byte[] dataValue = null);
-   ItemDataInfo AddDataLeaf(ItemInfo item, string name,
-      Guid? dataId = null, string dataValue = null);
-
-   ItemInfo GetContainerRootItem(Guid id);
+   ItemInfo GetContainerRootItem(Guid containerId);
    List<ContainerInfo> GetContainers();
-   List<ItemInfo> GetContainerItems(Guid id);
+   List<ItemInfo> GetContainerItems(Guid icontainerIdd);
    ContentTypeInfo GetContentType(string contentTypeId);
-   ItemDataInfo GetDataByName(Guid fileItemId, string name);
+   ItemDataInfo GetDataByName(Guid itemId, string name);
 
-   ItemInfo? GetItem(Guid id);
+   ItemInfo? GetItem(Guid itemId);
    ItemInfo GetItemByPath(string name);
-   void DeleteItem(Guid id);
+   RequestStatus DeleteItem(Guid itemId);
 
    List<ItemInfo?> GetBranch(string? path = null);
 
    ItemInfo AddItem(ItemInfo item);
-
    ItemDataInfo AddItem(ItemDataInfo item);
-   ItemDataInfo GetData(Guid id);
-   List<ItemDataInfo> GetItemData(Guid id);
-   void DeleteItemData(Guid id);
-   void DeleteData(Guid id);
+
+   ItemDataInfo GetData(Guid dataId);
+   List<ItemDataInfo> GetItemData(Guid itemId);
+   RequestStatus DeleteItemData(Guid itemId);
+   RequestStatus DeleteData(Guid dataId);
 
 }

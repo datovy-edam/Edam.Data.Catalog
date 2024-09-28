@@ -16,11 +16,11 @@ public class ItemDataInfo
    [Key]
    public Guid Id { get; set; } = Guid.NewGuid();
 
-   [ForeignKey(nameof(FileItem))]
-   public Guid FileItemId { get; set; }
+   [ForeignKey(nameof(Item))]
+   public Guid ItemId { get; set; }
 
    [Required]
-   public ItemInfo FileItem { get; set; }
+   public ItemInfo Item { get; set; }
 
    [MaxLength(80)]
    public string PartitionId { get; set; } = PARTITION_DEFAULT;
@@ -60,4 +60,28 @@ public class ItemDataInfo
 
    [MaxLength(20)]
    public string RecordStatusCode { get; set; } = "Active";
+
+   /// <summary>
+   /// Create/Update file item data.
+   /// </summary>
+   /// <param name="itemId">Guid of parent item</param>
+   /// <param name="name">unique data item name</param>
+   /// <param name="dataId">data id</param>
+   /// <param name="contentType">content type ID</param>
+   /// <returns>file item instance is returned</returns>
+   public static ItemDataInfo CreateDataLeaf(Guid itemId, string name,
+      Guid? dataId = null, ContentTypeInfo? contentType = null)
+   {
+      var data = new ItemDataInfo();
+
+      data.Id = dataId ?? data.Id;
+      data.ItemId = itemId;
+      data.Name = name;
+
+      data.ContentType = contentType ?? null;
+      data.ContentTypeId = contentType == null ? null : contentType.TypeId;
+
+      return data;
+   }
+
 }

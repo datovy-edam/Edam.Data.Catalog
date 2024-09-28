@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Edam.DataObjects.Medias;
 using Edam.DataObjects.Trees;
 using Edam.InOut;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Edam.Data.CatalogModel
 {
@@ -34,6 +35,18 @@ namespace Edam.Data.CatalogModel
       }
 
       /// <summary>
+      /// Get Content Type based on MediaId and Content TypeId.
+      /// </summary>
+      /// <returns>instance of ContentType is returned</returns>
+      public ContentTypeInfo GetContentType()
+      {
+         var contentType = new ContentTypeInfo();
+         contentType.TypeId = ContentType;
+         contentType.Description = MediaFormat.ToString();
+         return contentType;
+      }
+
+      /// <summary>
       /// Setup Full Path details...
       /// </summary>
       /// <param name="path">path</param>
@@ -55,14 +68,14 @@ namespace Edam.Data.CatalogModel
          }
 
          MediaFormat = MediaContentTypeHelper.GetMediaFormat(Extension);
-         ContentType = MediaFormat == MediaFormat.Unknown ? String.Empty :
+         ContentType = MediaFormat == MediaFormat.Unknown ? string.Empty :
             MediaContentTypeHelper.ToContentTypeText(MediaFormat);
 
          if (MediaFormat == MediaFormat.Unknown ||
-            String.IsNullOrWhiteSpace(Extension))
+            string.IsNullOrWhiteSpace(Extension))
          {
-            Extension = String.Empty;
-            ExtensionName = String.Empty;
+            Extension = string.Empty;
+            ExtensionName = string.Empty;
             Type = ItemType.Folder;
             Item.ItemType = TreeItemType.Branch;
          }

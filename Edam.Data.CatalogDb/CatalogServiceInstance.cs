@@ -1,12 +1,14 @@
-﻿using Edam.Application;
-using Edam.Data.CatalogModel;
-using Edam.DataObjects.Medias;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using Edam.Application;
+using Edam.Data.CatalogModel;
+using Edam.DataObjects.Medias;
+using Edam.DataObjects.Requests;
 
 namespace Edam.Data.CatalogDb;
 
@@ -190,12 +192,12 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    /// <summary>
    /// Get Item Data entries.
    /// </summary>
-   /// <param name="id">File-Item ID</param>
+   /// <param name="itemId">File-Item ID</param>
    /// <returns>Get list of data items for given file-item id</returns>
-   public List<ItemDataInfo> GetItemDataByFileItemId(Guid id)
+   public List<ItemDataInfo> GetItemDataByItemId(Guid itemId)
    {
       var ditems = from x in DbContext.DataItems
-                   where x.FileItemId == id
+                   where x.ItemId == itemId
                    select x;
       return ditems.ToList<ItemDataInfo>();
    }
@@ -235,7 +237,7 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    public ItemDataInfo GetDataByName(Guid fileItemId, string name)
    {
       var ditems = from x in DbContext.DataItems
-                   where x.FileItemId == fileItemId &&
+                   where x.ItemId == fileItemId &&
                          x.Name == name
                    select x;
       var list = ditems.ToList<ItemDataInfo>();
@@ -334,6 +336,10 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
       {
          InitializeDbContext();
          container = CurrentContainer;
+         if (containerId == "\"\"")
+         {
+            cid = container.ContainerId;
+         }
       }
 
       if (container == null || container.ContainerId != cid)
@@ -478,8 +484,10 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    /// Delete Item-Data and Item.
    /// </summary>
    /// <param name="id">Container ID</param>
-   public void DeleteItem(Guid id)
+   /// <returns>request status (Completed) is returned, else (Unknown)</returns>
+   public RequestStatus DeleteItem(Guid id)
    {
+      RequestStatus status = RequestStatus.Unknown;
       var item = GetItem(id);
       if (item != null)
       {
@@ -490,7 +498,9 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
          }
          DbContext.FileItems.Remove(item);
          DbContext.SaveChanges();
+         status = RequestStatus.Completed;
       }
+      return status;
    }
 
    /// <summary>
@@ -600,7 +610,7 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    public ItemDataInfo AddItem(ItemDataInfo item)
    {
       ItemDataInfo ritem;
-      var ditem = GetDataByName(item.FileItemId, item.Name);
+      var ditem = GetDataByName(item.ItemId, item.Name);
       if (ditem == null)
       {
          ritem = item;
@@ -627,39 +637,12 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    /// <param name="item">parent file item</param>
    /// <param name="name">unique data item name</param>
    /// <param name="dataId">data id</param>
-   /// <returns>file item instance is returned</returns>
-   public ItemDataInfo CreateDataLeaf(ItemInfo item, string name,
-      Guid? dataId = null)
-   {
-      var data = new ItemDataInfo();
-
-      var ctype = GetContentType(data.ContentType.TypeId);
-      if (ctype == null)
-      {
-         ctype = data.ContentType;
-      }
-
-      data.Id = dataId ?? data.Id;
-      data.FileItemId = item.Id;
-      data.Name = name;
-      data.ContentTypeId = data.ContentType.TypeId;
-      data.ContentType = ctype;
-
-      return data;
-   }
-
-   /// <summary>
-   /// Create/Update file item data.
-   /// </summary>
-   /// <param name="item">parent file item</param>
-   /// <param name="name">unique data item name</param>
-   /// <param name="dataId">data id</param>
    /// <param name="dataValue">data value</param>
    /// <returns>file item instance is returned</returns>
    public ItemDataInfo CreateDataLeaf(ItemInfo item, string name,
       Guid? dataId = null, byte[] dataValue = null)
    {
-      var data = CreateDataLeaf(item, name, dataId);
+      var data = ItemDataInfo.CreateDataLeaf(item.Id, name, dataId);
       data.Data = dataValue;
 
       return data;
@@ -676,7 +659,7 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    public ItemDataInfo CreateDataLeaf(ItemInfo item, string name,
       Guid? dataId = null, string dataValue = null)
    {
-      var data = CreateDataLeaf(item, name, dataId);
+      var data = ItemDataInfo.CreateDataLeaf(item.Id, name, dataId);
       data.DataText = dataValue;
       return data;
    }
@@ -715,22 +698,28 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    /// Delete Item-Data and Item.
    /// </summary>
    /// <param name="itemId">Item ID</param>
-   public void DeleteData(Guid id)
+   /// <returns>request status (Completed) is returned, else (Unknown)</returns>
+   public RequestStatus DeleteData(Guid id)
    {
+      RequestStatus status = RequestStatus.Unknown;
       var ditem = GetData(id);
       if (ditem != null)
       {
          DbContext.DataItems.Remove(ditem);
          DbContext.SaveChanges();
+         status = RequestStatus.Completed;
       }
+      return status;
    }
 
    /// <summary>
    /// Delete Item-Data and Item.
    /// </summary>
    /// <param name="itemId">Item ID</param>
-   public void DeleteItemData(Guid itemId)
+   /// <returns>request status (Completed) is returned, else (Unknown)</returns>
+   public RequestStatus DeleteItemData(Guid itemId)
    {
+      RequestStatus status = RequestStatus.Unknown;
       var item = GetItem(itemId);
       if (item != null)
       {
@@ -740,7 +729,9 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
             DbContext.DataItems.Remove(ditem);
          }
          DbContext.SaveChanges();
+         status = RequestStatus.Completed;
       }
+      return status;
    }
 
    #endregion
