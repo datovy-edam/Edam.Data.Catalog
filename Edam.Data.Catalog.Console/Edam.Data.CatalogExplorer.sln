@@ -26,7 +26,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edam.Data.CatalogServiceCli
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0066CE5C-FD46-4B23-971B-D7639330DE68}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edam.Tests.CatalogServiceClient", "..\Tests\Edam.Tests.CatalogServiceClient\Edam.Tests.CatalogServiceClient.csproj", "{1C1B4696-DEDE-4866-B28B-CBACA5CAF064}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edam.Tests.CatalogServiceClient", "..\Tests\Edam.Tests.CatalogServiceClient\Edam.Tests.CatalogServiceClient.csproj", "{1C1B4696-DEDE-4866-B28B-CBACA5CAF064}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edam.Data.CatalogService", "..\Edam.Data.CatalogService\Edam.Data.CatalogService.csproj", "{25CFAF46-C373-4E63-824C-C78FBDE2AA0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,6 +62,10 @@ Global
 		{1C1B4696-DEDE-4866-B28B-CBACA5CAF064}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C1B4696-DEDE-4866-B28B-CBACA5CAF064}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C1B4696-DEDE-4866-B28B-CBACA5CAF064}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25CFAF46-C373-4E63-824C-C78FBDE2AA0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25CFAF46-C373-4E63-824C-C78FBDE2AA0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25CFAF46-C373-4E63-824C-C78FBDE2AA0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25CFAF46-C373-4E63-824C-C78FBDE2AA0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -70,6 +76,7 @@ Global
 		{B9D2E7F3-299F-469F-B7D7-F6AA395D0341} = {DAA062D6-F8A1-42C2-9203-AA04E7C15240}
 		{EF7C8488-FBFF-489E-B682-494458F24B7A} = {DAA062D6-F8A1-42C2-9203-AA04E7C15240}
 		{1C1B4696-DEDE-4866-B28B-CBACA5CAF064} = {0066CE5C-FD46-4B23-971B-D7639330DE68}
+		{25CFAF46-C373-4E63-824C-C78FBDE2AA0F} = {DAA062D6-F8A1-42C2-9203-AA04E7C15240}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9E60B223-C389-4591-981C-CF364A93DBB8}
