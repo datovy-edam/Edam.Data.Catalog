@@ -44,4 +44,11 @@ public class ServiceClient
       var citem = client.AddItem(item);
    }
 
+   [TestMethod]
+   public void GetContentType()
+   {
+      CatalogClient client = CatalogClient.InitializeClient(_sessionId);
+      client.GetContentType("application/json");
+   }
+
 }

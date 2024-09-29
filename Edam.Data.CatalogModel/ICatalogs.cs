@@ -16,5 +16,5 @@ public interface ICatalogs
 
    // instantiate a named catalog service
    ResultsLog<ICatalogService> GetCatalog(
-      string invariantName, string? connectionString);
+      string sessionID, string invariantName, string? connectionString);
 }

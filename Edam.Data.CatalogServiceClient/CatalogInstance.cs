@@ -1,50 +1,36 @@
-﻿using System;
+﻿using Edam.Data.CatalogModel;
+using Edam.Diagnostics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-// -----------------------------------------------------------------------------
-using Edam.Data.CatalogModel;
-using Edam.DataObjects.Entities;
-using Edam.Diagnostics;
+namespace Edam.Data.CatalogServiceClient;
 
-namespace Edam.Data.CatalogDb;
-
-public class CatalogInstance : ICatalogs
+public class CatalogInstance
 {
-   public const string EDAM_FILE_SYSTEM_DB = "edam.file.system.db";
-
-   private static string _CatalogName = EDAM_FILE_SYSTEM_DB;
-
-   public string GetCurrentCatalogName()
-   {
-      return _CatalogName;
-   }
-
-   public string GetDefaultCatalogName()
-   {
-      return EDAM_FILE_SYSTEM_DB;
-   }
+   public const string EDAM_BASE_URI = "edam.base.uri.db";
+   private static string _CatalogName = EDAM_BASE_URI;
 
    /// <summary>
    /// Get an instance of a Catalog Service by name.
    /// </summary>
    /// <param name="sessionId">session ID</param>
    /// <param name="invariantName">name of the catalog instance</param>
-   /// <param name="connectionString">default connection string</param>
+   /// <param name="baseUri">default service base URI</param>
    /// <returns>an instance of the requested catalog is returned</returns>
    public ResultsLog<ICatalogService?> GetCatalog(
-      string sessionId, string invariantName, string? connectionString = null)
+      string sessionId, string invariantName, string baseUri)
    {
       ResultsLog<ICatalogService?> results = new ResultsLog<ICatalogService?>();
       if (!String.IsNullOrWhiteSpace(invariantName))
       {
-         switch(invariantName)
+         switch (invariantName)
          {
-            case EDAM_FILE_SYSTEM_DB:
-               _CatalogName = EDAM_FILE_SYSTEM_DB;
-               results.Instance = new CatalogServiceInstance(connectionString);
+            case EDAM_BASE_URI:
+               _CatalogName = EDAM_BASE_URI;
+               results.Instance = new CatalogClient(sessionId, baseUri);
                results.Succeeded();
                break;
             default:
@@ -58,4 +44,5 @@ public class CatalogInstance : ICatalogs
       }
       return results;
    }
+
 }

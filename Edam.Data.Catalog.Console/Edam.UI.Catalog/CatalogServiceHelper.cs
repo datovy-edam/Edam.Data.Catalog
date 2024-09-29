@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Edam.Application;
 using Edam.Data.CatalogModel;
-using Edam.Data.CatalogDb;
+using catDb = Edam.Data.CatalogDb;
+using catSrv = Edam.Data.CatalogServiceClient;
 using Edam.Diagnostics;
 using Windows.Storage.Pickers;
 
@@ -19,22 +20,73 @@ public class CatalogServiceHelper
     /// Get Catalog Service instance...
     /// </summary>
     /// <returns>Catalog Service instance is returned</returns>
-    public static ICatalogService GetInstance(string? connectionString = null)
+    public static ICatalogService GetClientInstance(
+        string? baseUri = null)
     {
-        var _conString = String.IsNullOrWhiteSpace(connectionString) ?
-            AppSettings.GetConnectionString("fileSystemDb") :
-            connectionString;
+        ResultsLog<ICatalogService?> results = null;
+        var _conUri = String.IsNullOrWhiteSpace(baseUri) ?
+            AppSettings.GetString("CatalogServiceBaseUri") :
+            baseUri;
 
         // initialize repository
-        CatalogInstance instance = new CatalogInstance();
-        ResultsLog<ICatalogService?> results = instance.GetCatalog(
-           CatalogInstance.EDAM_FILE_SYSTEM_DB, connectionString);
+        catSrv.CatalogInstance instance = new catSrv.CatalogInstance();
+        results = instance.GetCatalog(_SessionId,
+           catSrv.CatalogInstance.EDAM_BASE_URI, _conUri);
+
         if (results.Success)
         {
             results.Instance.SetContainer(_SessionId, "");
             return results.Instance;
         }
         return null;
+    }
+
+    /// <summary>
+    /// Get Catalog Service instance...
+    /// </summary>
+    /// <returns>Catalog Service instance is returned</returns>
+    public static ICatalogService GetLocalInstance(
+        string? connectionString = null)
+    {
+        ResultsLog<ICatalogService?> results = null;
+        var _conString = String.IsNullOrWhiteSpace(connectionString) ?
+            AppSettings.GetConnectionString("catalogDb") :
+            connectionString;
+
+        // initialize repository
+        catDb.CatalogInstance instance = new catDb.CatalogInstance();
+        results = instance.GetCatalog(_SessionId,
+           catDb.CatalogInstance.EDAM_FILE_SYSTEM_DB, connectionString);
+
+        if (results.Success)
+        {
+            results.Instance.SetContainer(_SessionId, "");
+            return results.Instance;
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Get Catalog Service instance...
+    /// </summary>
+    /// <param name="connectionUri">connection URI 
+    /// (Connection String or Base URI)</param>
+    /// <returns>Catalog Service instance is returned</returns>
+    public static ICatalogService GetInstance(string? connectionUri = null)
+    {
+        ICatalogService result = null;
+
+        if (Environment.OSVersion.Platform == PlatformID.Other)
+        {
+            // initialize repository
+            result = CatalogServiceHelper.GetClientInstance(connectionUri);
+        }
+        else
+        {
+            result = GetLocalInstance(connectionUri);
+        }
+
+        return result;
     }
 
     /// <summary>
