@@ -6,6 +6,7 @@ The Library contains:
 
 - Catalog Db (the Repository)
 - Catalog Model (C# classes and resources)
+- Catalog Service Client (implements a client for catalog web API)
 - Catalog Explorer (Uno Platform App for testing or adding data)
 
 Details of each follow.
@@ -41,6 +42,12 @@ Store as binary (blob) files.
   
 The Catalog Tree Builder can be used to prepare a Tree that could be viewed in
 Web or other related targets.
+
+## Catalog Service Client
+
+The Catalog Service Client implements the `ICatalogService` class and method to
+access the related Web base API.  The `Edam.Data.CatalogService` project
+implements the API and could participate in an .Net Aspire project.
 
 ## Catalog Explorer
 
