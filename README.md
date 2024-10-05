@@ -54,11 +54,36 @@ API will include all the expected functionality to allow access to file and
 folders for EDAM Projects but still these services should be independent and its
 functionality applicable to any application.
 
-# What is next?
+## Catalog Service Interfaces
+As of this version there are 2 available implentations to support the Catalog
+Service instance including:
 
-- Currently the emphasis is on the Windows platform and will keep advancing the
-libraries to that end.
-- As important, libraries to support the API Catalog services hopefully that
-will fully implment the same functionality as made available through the
-ICatalogService interface will be developed next or in parralel.
+- local service - implemented by instancing the Catalog Service within the
+host.
+- web service - implemented by firing web-service that implements the
+interface.
 
+The selection of one or the other is done by detecting the Uno Platform
+`Environment.OSVersion.Platform` variable that will conditionally instance the
+appropiate instance (local or other).  Get an instance of the Catalog Service by
+calling:
+
+```
+var catalogService = CatalogServiceHelper.GetCatalog([connection-uri]);
+```
+
+or
+
+```
+var catalogService = await CatalogServiceHelper.GetCatalogAsync([connection-uri]);
+```
+
+Note that the optional connection URI can be a connection string if local or an
+http URI if a web service is required.  If not provided it must be set using
+the main project appsettings.json setting the `DefaultConnectionString` and/or
+the `CatalogServiceBaseUri`.
+
+## What is next?
+
+- Test services under the Windows platform.
+- Test services under WebAssembly platform.
