@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace Edam.Data.CatalogModel;
 
-[Table("FileItem")]
+[Table("Item")]
 public class ItemInfo
 {
 

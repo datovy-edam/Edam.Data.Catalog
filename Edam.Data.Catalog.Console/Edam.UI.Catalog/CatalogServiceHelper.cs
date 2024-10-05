@@ -107,11 +107,11 @@ public class CatalogServiceHelper
     /// <summary>
     /// Get Catalog to build its tree and access data.
     /// </summary>
-    /// <param name="connectionString">connection string</param>
+    /// <param name="connectionUri">connection string</param>
     /// <returns>instance of catalog is returned</returns>
-    public static CatalogInfo GetCatalog(string? connectionString = null)
+    public static CatalogInfo GetCatalog(string? connectionUri = null)
     {
-        ICatalogService instance = GetInstance(connectionString);
+        ICatalogService instance = GetInstance(connectionUri);
         CatalogInfo catalog = new CatalogInfo(instance, _SessionId);
         catalog.InitializeCatalog("", buildTree: true);
         return catalog;
@@ -120,14 +120,14 @@ public class CatalogServiceHelper
     /// <summary>
     /// Get Catalog Async...
     /// </summary>
-    /// <param name="connectionString">connection string</param>
+    /// <param name="connectionUri">connection string</param>
     /// <returns>instance of catalog is returned</returns>
     public static async Task<CatalogInfo> GetCatalogAsync(
-        string? connectionString = null)
+        string? connectionUri = null)
     {
         CatalogInfo catalog = null;
         await Task.Run(() => {
-            catalog = GetCatalog(connectionString);
+            catalog = GetCatalog(connectionUri);
         });
         return catalog;
     }

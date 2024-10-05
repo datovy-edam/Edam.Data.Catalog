@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Edam.Data.CatalogModel;
 
-[Table("FileItemData")]
+[Table("ItemData")]
 public class ItemDataInfo
 {
    public const string PARTITION_DEFAULT = "default";

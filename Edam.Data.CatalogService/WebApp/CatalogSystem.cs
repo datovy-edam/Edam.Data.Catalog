@@ -39,7 +39,9 @@ public class CatalogSystem
    {
       ICatalogService? catalog = null;
       var inst = new CatalogInstance();
-      var results = inst.GetCatalog(CatalogInstance.EDAM_FILE_SYSTEM_DB);
+      string sessionId = Guid.NewGuid().ToString();
+      var results = inst.GetCatalog(
+         sessionId, CatalogInstance.EDAM_FILE_SYSTEM_DB);
       if (results != null)
       {
          catalog = results.Instance;

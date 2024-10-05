@@ -45,8 +45,12 @@ public class CatalogExplorerViewModel : ObservableObject
     /// </summary>
     public async void InitializeCatalog(AppModelState state)
     {
+        string connectionUri =
+            Environment.OSVersion.Platform == PlatformID.Other ?
+            state.GetDefaultConnectionString() : "";
+
         _Catalog = await CatalogServiceHelper.GetCatalogAsync(
-            state.GetDefaultConnectionString());
+            connectionUri);
 
         // get root element observable item
         DataSource.Clear();
