@@ -130,7 +130,7 @@ public class CatalogSystem
 
       if (catalog != null)
       {
-         rootItem = catalog.RootItem;
+         rootItem = catalog.RootTreeItem;
       }
 
       return rootItem;

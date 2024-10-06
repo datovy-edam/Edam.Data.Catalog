@@ -49,11 +49,11 @@ public class CatalogInfo
    /// File based Root item
    /// </summary>
    public CatalogPathItem RootPathItem { get; set; }
-   public ItemInfo RootFileItem
+   public ItemInfo RootItem
    {
       get { return RootPathItem.Item; }
    }
-   public CatalogItemInfo? RootItem
+   public CatalogItemInfo? RootTreeItem
    {
       get { return RootPathItem.TreeItem; }
    }
@@ -92,7 +92,7 @@ public class CatalogInfo
 
       // add catalog
       _Catalog = new HashSet<CatalogItemInfo>();
-      _Catalog.Add(this.RootItem);
+      _Catalog.Add(this.RootTreeItem);
 
       return this;
    }

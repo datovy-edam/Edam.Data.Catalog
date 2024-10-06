@@ -13,7 +13,7 @@ using Edam.DataObjects.Requests;
 namespace Edam.Data.CatalogDb;
 
 /// <summary>
-/// Support for File System repository inqueries and requests.
+/// Support for Catalog/File System repository inqueries and requests.
 /// </summary>
 public class CatalogServiceInstance : ICatalogService, IDisposable
 {
@@ -42,11 +42,11 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    /// <summary>
    /// Initialize Repository
    /// </summary>
-   private void InitializeDbContext()
+   protected void InitializeDbContext()
    {
       var connectionString = 
          String.IsNullOrWhiteSpace(_defaultConnectionString) ?
-            AppSettings.GetConnectionString("fileSystemDb") :
+            AppSettings.GetConnectionString("catalogDb") :
             _defaultConnectionString;
 
       DbContext = new CatalogContext(connectionString);
@@ -97,7 +97,7 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
       CurrentContainer = DefaultContainer;
 
       // define default container root item
-      if (!DbContext.FileItems.Any())
+      if (!DbContext.Items.Any())
       {
          CreateRootItem();
       }
@@ -126,7 +126,7 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    /// <returns>instance of File-Item is returned</returns>
    public ItemInfo GetContainerRootItem(Guid id)
    {
-      var items = from item in DbContext.FileItems
+      var items = from item in DbContext.Items
                   where item.Name == ROOT_ID &&
                         item.FullPath == ROOT_PATH &&
                         item.ContainerId == id
@@ -165,7 +165,7 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    /// <returns></returns>
    public List<ItemInfo> GetContainerItems(Guid id)
    {
-      var items = from x in DbContext.FileItems
+      var items = from x in DbContext.Items
                   where x.ContainerId == id
                   select x;
       return items.ToList<ItemInfo>();
@@ -178,7 +178,7 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    /// <returns>Get list of data items for given file-item id</returns>
    public ItemInfo GetItemByPath(string path)
    {
-      var ditems = from x in DbContext.FileItems
+      var ditems = from x in DbContext.Items
                    where x.FullPath == path &&
                          x.ContainerId == CurrentContainer.Id
                    select x;
@@ -251,7 +251,7 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    /// <returns>Get list of data items for given file-item id</returns>
    public ItemInfo? GetItem(Guid id)
    {
-      var ditems = from x in DbContext.FileItems
+      var ditems = from x in DbContext.Items
                    where x.Id == id
                    select x;
       var list = ditems.ToList<ItemInfo>();
@@ -266,7 +266,7 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    public List<ItemInfo?> GetBranch(string? path = null)
    {
       var spath = String.IsNullOrWhiteSpace(path) ? "/" : path;
-      var ditems = DbContext.FileItems.
+      var ditems = DbContext.Items.
          Where((x) => EF.Functions.Like(x.FullPath, spath +"%") &&
             x.Container.Id == CurrentContainer.Id);
 
@@ -296,7 +296,7 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    /// </summary>
    /// <param name="containerId"></param>
    /// <returns></returns>
-   private string GetContainerId(string? containerId)
+   protected string GetContainerId(string? containerId)
    {
       if (String.IsNullOrWhiteSpace(containerId))
       {
@@ -391,7 +391,7 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    /// Delete Container Item-Data and Items.
    /// </summary>
    /// <param name="id">Container ID</param>
-   private void DeleteContainerData(Guid id)
+   protected void DeleteContainerData(Guid id)
    {
       var fitems = GetContainerItems(id);
       foreach(var item in fitems)
@@ -401,7 +401,7 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
          {
             DbContext.DataItems.Remove(ditem);
          }
-         DbContext.FileItems.Remove(item);
+         DbContext.Items.Remove(item);
       }
       DbContext.SaveChanges();
    }
@@ -456,20 +456,20 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    /// Add item (or update) in repository based on its full path.
    /// </summary>
    /// <param name="item">add item</param>
-   public ItemInfo AddItem(ItemInfo item)
+   public virtual ItemInfo AddItem(ItemInfo item)
    {
       ItemInfo ritem;
       var iitem = GetItemByPath(item.FullPath);
       if (iitem == null)
       {
          ritem = item;
-         DbContext.FileItems.Add(item);
+         DbContext.Items.Add(item);
       }
       else if (item.Id != iitem.Id)
       {
          item.Id = iitem.Id;
          ritem = iitem;
-         DbContext.FileItems.Update(iitem);
+         DbContext.Items.Update(iitem);
       }
       else
       {
@@ -485,7 +485,7 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    /// </summary>
    /// <param name="id">Container ID</param>
    /// <returns>request status (Completed) is returned, else (Unknown)</returns>
-   public RequestStatus DeleteItem(Guid id)
+   public virtual RequestStatus DeleteItem(Guid id)
    {
       RequestStatus status = RequestStatus.Unknown;
       var item = GetItem(id);
@@ -496,7 +496,7 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
          {
             DbContext.DataItems.Remove(ditem);
          }
-         DbContext.FileItems.Remove(item);
+         DbContext.Items.Remove(item);
          DbContext.SaveChanges();
          status = RequestStatus.Completed;
       }
@@ -508,7 +508,7 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    /// </summary>
    /// <param name="containerId">(optional) container id, else the container Id
    /// of the current container is used</param>
-   public ItemInfo CreateRootItem(Guid? containerId = null)
+   public virtual ItemInfo CreateRootItem(Guid? containerId = null)
    {
       Guid cid = containerId == null ? CurrentContainer.Id : containerId.Value;
       var root = GetContainerRootItem(cid);
@@ -520,7 +520,7 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
          item.ContainerId = cid;
          item.FullPath = ROOT_PATH;
 
-         DbContext.FileItems.Add(item);
+         DbContext.Items.Add(item);
          DbContext.SaveChanges();
       }
       else
@@ -538,7 +538,7 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    /// <param name="containerId">container id [default: CurrentContainer.Id]
    /// </param>
    /// <returns>file item instance is returned</returns>
-   public ItemInfo CreateBranch(
+   public virtual ItemInfo CreateBranch(
       string name, string? description = null, Guid? containerId = null)
    {
       var desc = description ?? name;
@@ -570,7 +570,7 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    /// <param name="name">name of branch</param>
    /// <param name="description">description</param>
    /// <returns>file item instance is returned</returns>
-   public ItemInfo CreateLeaf(string path, string name,
+   public virtual ItemInfo CreateLeaf(string path, string name,
       Guid? id = null, string? description = null, string? dataValue = null)
    {
       if (String.IsNullOrWhiteSpace(path))
@@ -607,7 +607,7 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    /// identified by its name.
    /// </summary>
    /// <param name="item">add item</param>
-   public ItemDataInfo AddItem(ItemDataInfo item)
+   public virtual ItemDataInfo AddItem(ItemDataInfo item)
    {
       ItemDataInfo ritem;
       var ditem = GetDataByName(item.ItemId, item.Name);
@@ -639,7 +639,7 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    /// <param name="dataId">data id</param>
    /// <param name="dataValue">data value</param>
    /// <returns>file item instance is returned</returns>
-   public ItemDataInfo CreateDataLeaf(ItemInfo item, string name,
+   public virtual ItemDataInfo CreateDataLeaf(ItemInfo item, string name,
       Guid? dataId = null, byte[] dataValue = null)
    {
       var data = ItemDataInfo.CreateDataLeaf(item.Id, name, dataId);
@@ -656,7 +656,7 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    /// <param name="dataId">data id</param>
    /// <param name="dataValue">data value</param>
    /// <returns>file item instance is returned</returns>
-   public ItemDataInfo CreateDataLeaf(ItemInfo item, string name,
+   public virtual ItemDataInfo CreateDataLeaf(ItemInfo item, string name,
       Guid? dataId = null, string dataValue = null)
    {
       var data = ItemDataInfo.CreateDataLeaf(item.Id, name, dataId);
@@ -672,7 +672,7 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    /// <param name="dataId">data id</param>
    /// <param name="dataValue">data value</param>
    /// <returns>file item instance is returned</returns>
-   public ItemDataInfo AddDataLeaf(ItemInfo item, string name,
+   public virtual ItemDataInfo AddDataLeaf(ItemInfo item, string name,
       Guid? dataId = null, byte[] dataValue = null)
    {
       var data = CreateDataLeaf(item, name, dataId, dataValue);
@@ -687,7 +687,7 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    /// <param name="dataId">data id</param>
    /// <param name="dataValue">data value</param>
    /// <returns>file item instance is returned</returns>
-   public ItemDataInfo AddDataLeaf(ItemInfo item, string name,
+   public virtual ItemDataInfo AddDataLeaf(ItemInfo item, string name,
       Guid? dataId = null, string dataValue = null)
    {
       var data = CreateDataLeaf(item, name, dataId, dataValue);
@@ -699,7 +699,7 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    /// </summary>
    /// <param name="itemId">Item ID</param>
    /// <returns>request status (Completed) is returned, else (Unknown)</returns>
-   public RequestStatus DeleteData(Guid id)
+   public virtual RequestStatus DeleteData(Guid id)
    {
       RequestStatus status = RequestStatus.Unknown;
       var ditem = GetData(id);
@@ -717,7 +717,7 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    /// </summary>
    /// <param name="itemId">Item ID</param>
    /// <returns>request status (Completed) is returned, else (Unknown)</returns>
-   public RequestStatus DeleteItemData(Guid itemId)
+   public virtual RequestStatus DeleteItemData(Guid itemId)
    {
       RequestStatus status = RequestStatus.Unknown;
       var item = GetItem(itemId);

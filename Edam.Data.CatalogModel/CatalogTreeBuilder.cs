@@ -174,11 +174,11 @@ public class CatalogTreeBuilder
          }
 
          // finally add child to parent as needed
-         if (parent == null && !_CatalogInfo.RootItem.Children.TryGetValue(
+         if (parent == null && !_CatalogInfo.RootTreeItem.Children.TryGetValue(
             pathItem.TreeItem, out CatalogItemInfo rootChild))
          {
             // add item to the root node
-            _CatalogInfo.RootItem.Children.Add(pathItem.TreeItem);
+            _CatalogInfo.RootTreeItem.Children.Add(pathItem.TreeItem);
          }
          else if (parent != null && !parent.TreeItem.Children.TryGetValue(
             pathItem.TreeItem, out CatalogItemInfo child))
@@ -212,23 +212,23 @@ public class CatalogTreeBuilder
          item = pathItem;
       }
 
-      // setup parent as needed
-      if (item.Parent == null)
-      {
-         item.Parent = RegisterBranchPath(pathItem.Path);
-      }
-
-      // is this the root path? if so, skip it...
-      if (pathItem.Path == _CatalogInfo.RootFileItem.FullPath)
-      {
-         return _CatalogInfo.RootItem;
-      }
-
       // setup tree item as needed
       if (item.TreeItem == null)
       {
          item.TreeItem = CreateItem(pathItem);
          item.TreeItem.Number = ++_ItemCount;
+      }
+
+      // is this the root path? if so, skip it...
+      if (pathItem.Path == _CatalogInfo.RootItem.FullPath)
+      {
+         return _CatalogInfo.RootTreeItem;
+      }
+
+      // setup parent as needed
+      if (item.Parent == null)
+      {
+         item.Parent = RegisterBranchPath(pathItem.Path);
       }
 
       // finally add child to parent as needed

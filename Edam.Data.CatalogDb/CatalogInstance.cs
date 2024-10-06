@@ -44,7 +44,8 @@ public class CatalogInstance : ICatalogs
          {
             case EDAM_FILE_SYSTEM_DB:
                _CatalogName = EDAM_FILE_SYSTEM_DB;
-               results.Instance = new CatalogServiceInstance(connectionString);
+               results.Instance = new CatalogBuilderServiceInstance(
+                  connectionString);
                results.Succeeded();
                break;
             default:

@@ -9,7 +9,7 @@ public class CatalogContext : DbContext
 
    public DbSet<ContentTypeInfo> ContentTypes { get; set; }
    public DbSet<ContainerInfo> Containers { get; set; }
-   public DbSet<ItemInfo> FileItems { get; set; }
+   public DbSet<ItemInfo> Items { get; set; }
    public DbSet<ItemDataInfo> DataItems { get; set; }
 
    public string ConnectionString { get; }

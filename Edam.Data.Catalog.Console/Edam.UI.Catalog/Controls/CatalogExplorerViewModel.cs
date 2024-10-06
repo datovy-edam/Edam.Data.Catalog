@@ -54,7 +54,7 @@ public class CatalogExplorerViewModel : ObservableObject
 
         // get root element observable item
         DataSource.Clear();
-        RootItem = GetData(_Catalog.RootItem);
+        RootItem = GetData(_Catalog.RootTreeItem);
 
         // don't show root item so add first level items (the children)
         foreach(var itm in RootItem.Children)
