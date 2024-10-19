@@ -19,14 +19,31 @@ namespace Edam.UI.Catalog.Controls;
 public sealed partial class CatalogPanelControl : UserControl
 {
 
+    private AppModelState _state;
+    private bool _hasCatalog = false;
+
     public CatalogPanelControl()
     {
         this.InitializeComponent();
     }
 
-    public void InitializeCatalog(AppModelState state)
+    public async void InitializeCatalog(AppModelState state)
     {
-        CatalogExplorer.ViewModel.InitializeCatalog(state);
+        this._state = state;
+        if (IsLoaded && !_hasCatalog)
+        {
+            _hasCatalog = true;
+            //await CatalogExplorer.ViewModel.InitializeCatalogAsync(_state);
+        }
     }
 
+    private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+    {
+        if (_state == null || _hasCatalog)
+        {
+            return;
+        }
+        _hasCatalog = true;
+        //await CatalogExplorer.ViewModel.InitializeCatalogAsync(_state);
+    }
 }

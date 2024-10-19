@@ -4,11 +4,18 @@ using Edam.Data.CatalogModel;
 using szer = Edam.Serialization;
 using Edam.DataObjects.Requests;
 using Edam.DataObjects.Objects;
+using Newtonsoft;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddProblemDetails();
+builder.Services.AddCors();
+
+//builder.Services.AddControllersWithViews()
+//    .AddNewtonsoftJson(options =>
+//    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+//);
 
 builder.AddSqlServerDbContext<CatalogContext>("CatalogDb");
 
@@ -43,7 +50,7 @@ app.MapGet("/catalogservice/container/info", (
 
 // get container info
 app.MapGet("/catalogservice/container/id", (
-   string sessionId, Guid id) =>
+   string sessionId, string id) =>
 {
    var container = appService.CatalogSystem.Instance.GetContainer(id);
    return container;
@@ -62,14 +69,6 @@ app.MapGet("/catalogservice/container/item/root/id", (
    string sessionId, Guid id) =>
 {
    var container = appService.CatalogSystem.Instance.GetContainerRootItem(id);
-   return container;
-});
-
-// create container root item for a given container...
-app.MapPost("/catalogservice/container/item/root/id", (
-   string sessionId, Guid id) =>
-{
-   var container = appService.CatalogSystem.Instance.CreateRootItem(id);
    return container;
 });
 
@@ -192,7 +191,21 @@ app.MapDelete("/catalogservice/catalog/item/id", (
 #endregion
 #region -- 4.00 - Manage Branches and Leafs
 
-// these methods uses already available container or catalog support...
+// get banch
+app.MapGet("/catalogservice/catalog/branch/items", (
+   string sessionId, string path) =>
+{
+   string ritem = null;
+   WebAppService.SetupSession(sessionId);
+   //if (sessionId != WebAppService.SessionId)
+   //{
+   //   return null;
+   //}
+
+   List<ItemInfo> item = appService.CatalogSystem.Instance.GetBranch(path);
+
+   return item;
+});
 
 #endregion
 #region -- 4.00 - Catalog Data Item Support
@@ -322,5 +335,13 @@ app.MapGet("/catalogservice/catalog/content/type/id", (
 
 #endregion
 
+app.UseCors(cors => cors
+   .AllowAnyMethod()
+   .AllowAnyHeader()
+   .SetIsOriginAllowed(origin => true)
+   .AllowCredentials()
+);
+
+app.UseDeveloperExceptionPage();
 app.MapDefaultEndpoints();
 app.Run();

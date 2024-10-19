@@ -20,10 +20,10 @@ public class CatalogInstance
    /// <param name="invariantName">name of the catalog instance</param>
    /// <param name="baseUri">default service base URI</param>
    /// <returns>an instance of the requested catalog is returned</returns>
-   public ResultsLog<ICatalogService?> GetCatalog(
+   public ResultsLog<ICatalogClient?> GetCatalog(
       string sessionId, string invariantName, string baseUri)
    {
-      ResultsLog<ICatalogService?> results = new ResultsLog<ICatalogService?>();
+      ResultsLog<ICatalogClient?> results = new ResultsLog<ICatalogClient?>();
       if (!String.IsNullOrWhiteSpace(invariantName))
       {
          switch (invariantName)

@@ -71,7 +71,8 @@ public class CatalogTreeBuilder
    /// <param name="item"></param>
    /// <param name="path"></param>
    /// <returns></returns>
-   private ItemInfo CreateFileItem(CatalogItemInfo item, string path)
+   private async Task<ItemInfo> CreateItemAsync(
+      CatalogItemInfo item, string path)
    {
       ItemInfo pitem = new ItemInfo();
       pitem.Name = item.Name;
@@ -82,7 +83,7 @@ public class CatalogTreeBuilder
       pitem.Container = _Service.CurrentContainer;
       pitem.ContainerId = pitem.Container.Id;
 
-      _Service.AddItem(pitem);
+      await _Service.AddItemAsync(pitem);
       return pitem;
    }
 
@@ -92,13 +93,13 @@ public class CatalogTreeBuilder
    /// <param name="pathItem"></param>
    /// <param name="updateParent"></param>
    /// <param name="updateItem"></param>
-   private void UpdateRepository(CatalogPathItem pathItem, 
+   private async Task UpdateRepositoryAsync(CatalogPathItem pathItem, 
       bool updateParent, bool updateItem)
    {
       ItemInfo item;
       if (updateParent)
       {
-         item = CreateFileItem(
+         item = await CreateItemAsync(
             pathItem.Parent.TreeItem, pathItem.Full);
       }
       if (updateItem)
@@ -115,7 +116,7 @@ public class CatalogTreeBuilder
 
          pathItem.TreeItem.Title = pathItem.Item.Description;
 
-         _Service.AddItem(pathItem.Item);
+         await _Service.AddItemAsync(pathItem.Item);
       }
    }
 
@@ -123,7 +124,7 @@ public class CatalogTreeBuilder
    /// Register leaf parent branch full path.
    /// </summary>
    /// <param name="fullPath">full path to register</param>
-   public CatalogPathItem RegisterBranchPath(string fullPath)
+   public async Task<CatalogPathItem> RegisterBranchPathAsync(string fullPath)
    {
       //if (fullPath == null || fullPath[0] != '/')
       //{
@@ -151,9 +152,9 @@ public class CatalogTreeBuilder
          }
          
          // add branch to repository
-         ItemInfo item = _Service.CreateBranch(name);
+         ItemInfo item = await _Service.CreateBranchAsync(path);
          item.FullPath = path;
-         item = _Service.AddItem(item);
+         item = await _Service.AddItemAsync(item);
 
          // add branch to registry
          var pathItem = new CatalogPathItem(item);
@@ -198,7 +199,7 @@ public class CatalogTreeBuilder
    /// </summary>
    /// <param name="pathItem">file item</param>
    /// <returns>instance of catalog item is returned</returns>
-   public CatalogItemInfo GetItem(CatalogPathItem pathItem)
+   public async Task<CatalogItemInfo> GetItemAsync(CatalogPathItem pathItem)
    {
       bool updateParent = false;
       bool updateItem = false;
@@ -228,7 +229,7 @@ public class CatalogTreeBuilder
       // setup parent as needed
       if (item.Parent == null)
       {
-         item.Parent = RegisterBranchPath(pathItem.Path);
+         item.Parent = await RegisterBranchPathAsync(pathItem.Path);
       }
 
       // finally add child to parent as needed
@@ -242,7 +243,7 @@ public class CatalogTreeBuilder
       // item.Parent.TreeItem.Children.Add(item.TreeItem);
 
       // update repository
-      UpdateRepository(pathItem, updateParent, updateItem);
+      await UpdateRepositoryAsync(pathItem, updateParent, updateItem);
 
       return item.TreeItem;
    }
@@ -252,10 +253,10 @@ public class CatalogTreeBuilder
    /// </summary>
    /// <param name="item">file item</param>
    /// <returns>instance of catalog item is returned</returns>
-   public CatalogPathItem GetItem(ItemInfo item)
+   public async Task<CatalogPathItem> GetItemAsync(ItemInfo item)
    {
       var pitem = new CatalogPathItem(item);
-      var citem = GetItem(pitem);
+      var citem = await GetItemAsync(pitem);
       return pitem;
    }
 
@@ -264,12 +265,12 @@ public class CatalogTreeBuilder
    /// </summary>
    /// <param name="fullPath">full path</param>
    /// <returns>instance of catalog item is returned</returns>
-   public CatalogPathItem GetItem(string fullPath)
+   public async Task<CatalogPathItem> GetItemAsync(string fullPath)
    {
       ItemInfo fitem = new ItemInfo();
       fitem.FullPath = fullPath;
       CatalogPathItem item = new CatalogPathItem(fitem);
-      var citem = GetItem(item);
+      var citem = await GetItemAsync(item);
       return item;
    }
 
@@ -314,14 +315,14 @@ public class CatalogTreeBuilder
    /// Get branch items for current container.
    /// </summary>
    /// <param name="path">path to branch</param>
-   public void GetBranch(string? path = null)
+   public async Task GetBranchAsync(string? path = null)
    {
       string spath = GetPath(path);
       spath = spath.Length > 1 ? spath + "/" : spath;
-      var items = _Service.GetBranch(spath);
+      var items = await _Service.GetBranchAsync(spath);
       foreach (var item in items)
       {
-         GetItem(item);
+         await GetItemAsync(item);
       }
    }
 
@@ -330,7 +331,7 @@ public class CatalogTreeBuilder
    /// </summary>
    /// <param name="resetCatalog">reset catalog [default: true]</param>
    /// <returns>instance of Catalog is returned</returns>
-   public void BuildTree(bool resetCatalog = true)
+   public async Task BuildTreeAsync(bool resetCatalog = true)
    {
       if (resetCatalog)
       {
@@ -338,7 +339,7 @@ public class CatalogTreeBuilder
          _Dictionary.Clear();
       }
 
-      GetBranch();
+      await GetBranchAsync();
    }
 
 }

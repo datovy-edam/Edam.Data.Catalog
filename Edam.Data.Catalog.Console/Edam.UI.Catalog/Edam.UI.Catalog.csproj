@@ -44,7 +44,6 @@
     <PackageReference Include="CommunityToolkit.WinUI.Controls.Sizers" />
     <PackageReference Include="Microsoft.Extensions.Localization" />
     <PackageReference Include="Microsoft.Extensions.Options" />
-    <PackageReference Include="System.Text.Json" />
     <PackageReference Include="Uno.Extensions.Navigation" />
   </ItemGroup>
 

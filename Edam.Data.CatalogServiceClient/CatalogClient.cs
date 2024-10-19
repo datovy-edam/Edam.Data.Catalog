@@ -6,7 +6,7 @@ using Edam.Diagnostics;
 using Edam.Net;
 using Edam.Net.Web;
 using Edam.Text;
-
+using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,7 +18,7 @@ using System.Xml.Linq;
 namespace Edam.Data.CatalogServiceClient;
 
 
-public class CatalogClient : ICatalogService
+public class CatalogClient : ICatalogClient, ICatalogService
 {
 
    #region -- 1.00 - Fields and Properties declration/definitions
@@ -47,6 +47,8 @@ public class CatalogClient : ICatalogService
    private const string URI_ITEM_ADD = "catalog/item";
    private const string URI_ITEM_ID = "catalog/item/id";
    private const string URI_ITEM_PATH = "catalog/item/path";
+
+   private const string URI_BRANCH_ITEMS = "catalog/branch/items";
 
    private const string URI_ITEM_DATA_ITEM = "catalog/data/item";
    private const string URI_ITEM_DATA_ITEM_ID = "catalog/data/item/id";
@@ -94,6 +96,11 @@ public class CatalogClient : ICatalogService
    public async Task<ContainerInfo> InitializeClientAsync(
       string sessionId, string? containerId = null)
    {
+      if (_client != null)
+      {
+         return DefaultContainer;
+      }
+
       _resultsLog.Clear();
       _lastSessionId = sessionId;
       _client = new WebApiClient(_httpRequestInfo);
@@ -101,12 +108,12 @@ public class CatalogClient : ICatalogService
       QueryStringBuilder pars = new QueryStringBuilder();
       pars.Add(QueryStringTag.SessionId, sessionId);
       pars.Add(TAG_CONTAINER_ID, containerId);
-      ContainerInfo container = null;
+      ContainerInfo? container = null;
 
       var req = URI_SESSION_INFO + pars.ToString();
       try
       {
-         container = await _client.GetDataFromJsonAsync<ContainerInfo>(req);
+         container = await _client.GetDataFromJsonAsync<ContainerInfo?>(req);
          DefaultContainer = CurrentContainer = container;
       }
       catch (Exception ex)
@@ -305,6 +312,11 @@ public class CatalogClient : ICatalogService
    public async Task<ContainerInfo> GetContainerAsync(
       string? containerId, bool checkId = true)
    {
+      if (_client == null)
+      {
+
+      }
+
       _resultsLog.Clear();
 
       QueryStringBuilder pars = new QueryStringBuilder();
@@ -456,50 +468,6 @@ public class CatalogClient : ICatalogService
    }
 
    /// <summary>
-   /// Create Container Root Item Async.
-   /// </summary>
-   /// <param name="id">Guid of container whose root item is requested</param>
-   /// <returns>root item is returned</returns>
-   public async Task<ItemInfo> PostContainerRootItemAsync(Guid id)
-   {
-      _resultsLog.Clear();
-
-      QueryStringBuilder pars = new QueryStringBuilder();
-      pars.Add(QueryStringTag.SessionId, _lastSessionId);
-      pars.Add(TAG_CONTAINER_GUID, id.ToString());
-      ItemInfo item = null;
-
-      var req = URI_CONTAINER_ROOT_ITEM_ID + pars.ToString();
-      try
-      {
-         item = await _client.PostAsync<ItemInfo>(req, id.ToString());
-      }
-      catch (Exception ex)
-      {
-         _resultsLog.Failed(ex);
-      }
-
-      return item;
-   }
-
-   /// <summary>
-   /// Get Container Root Item.
-   /// </summary>
-   /// <param name="id">Guid of container whose root item is requested</param>
-   /// <returns>root item is returned</returns>
-   public ItemInfo PostContainerRootItem(Guid id)
-   {
-      ItemInfo? item = null;
-      Task<ItemInfo> result = PostContainerRootItemAsync(id);
-      result.Wait();
-      if (result.Status == TaskStatus.RanToCompletion)
-      {
-         item = result.Result;
-      }
-      return item;
-   }
-
-   /// <summary>
    /// Get Container Items Async.
    /// </summary>
    /// <param name="id">container id whose items are requested</param>
@@ -543,63 +511,8 @@ public class CatalogClient : ICatalogService
       return items;
    }
 
-   /// <summary>
-   /// Get Container by ID (GUID) Async.
-   /// </summary>
-   /// <param name="id">guid id of the container to search</param>
-   /// <returns>if found, container info is returned</returns>
-   public async Task<ContainerInfo> GetContainerAsync(Guid id)
-   {
-      _resultsLog.Clear();
-
-      QueryStringBuilder pars = new QueryStringBuilder();
-      pars.Add(QueryStringTag.SessionId, _lastSessionId);
-      pars.Add(TAG_CONTAINER_GUID, id.ToString());
-      ContainerInfo container = null;
-
-      var req = URI_CONTAINER_ID + pars.ToString();
-      try
-      {
-         container = await _client.GetDataFromJsonAsync<ContainerInfo>(req);
-         DefaultContainer = CurrentContainer = container;
-      }
-      catch (Exception ex)
-      {
-         _resultsLog.Failed(ex);
-      }
-
-      return container;
-   }
-
-   /// <summary>
-   /// Get Container by ID (GUID).
-   /// </summary>
-   /// <param name="id">guid id of the container to search</param>
-   /// <returns>if found, container info is returned</returns>
-   public ContainerInfo GetContainer(Guid id)
-   {
-      ContainerInfo? container = null;
-      Task<ContainerInfo> result = GetContainerAsync(id);
-      result.Wait();
-      if (result.Status == TaskStatus.RanToCompletion)
-      {
-         container = result.Result;
-      }
-      return container;
-   }
-
    #endregion
    #region -- 4.00 - Items Management
-
-   /// <summary>
-   /// Create root item for given container.
-   /// </summary>
-   /// <param name="containerId">container Id</param>
-   /// <returns>created or found root item is returned</returns>
-   public ItemInfo CreateRootItem(Guid? containerId = null)
-   {
-      return PostContainerRootItem(containerId.Value);
-   }
 
    /// <summary>
    /// Add Item Async.
@@ -805,7 +718,7 @@ public class CatalogClient : ICatalogService
    /// <param name="description">description</param>
    /// <param name="containerId">target container</param>
    /// <returns>found or created branch is returned</returns>
-   public ItemInfo CreateBranch(
+   public async Task<ItemInfo> CreateBranchAsync(
       string path, string? description = null, Guid? containerId = null)
    {
       ItemInfo item = new ItemInfo();
@@ -817,9 +730,28 @@ public class CatalogClient : ICatalogService
 
       CatalogPathItem pitem = new CatalogPathItem(item);
 
-      ItemInfo ritem = AddItem(pitem.Item);
+      ItemInfo ritem = await AddItemAsync(pitem.Item);
 
       return ritem;
+   }
+
+   /// <summary>
+   /// Add Data Item.
+   /// </summary>
+   /// <param name="item">item to ask</param>
+   /// <returns>created item is returned, else null</returns>
+   public ItemInfo? CreateBranch(
+      string path, string? description = null, Guid? containerId = null)
+   {
+      ItemInfo? item = null;
+      Task<ItemInfo?> result = 
+         CreateBranchAsync(path, description, containerId.Value);
+      result.Wait();
+      if (result.Status == TaskStatus.RanToCompletion)
+      {
+         item = result.Result;
+      }
+      return item;
    }
 
    /// <summary>
@@ -849,9 +781,49 @@ public class CatalogClient : ICatalogService
       return ritem;
    }
 
-   public List<ItemInfo?> GetBranch(string? path = null)
+   /// <summary>
+   /// 
+   /// </summary>
+   /// <param name="path"></param>
+   /// <returns></returns>
+   /// <exception cref="NotImplementedException"></exception>
+   public async Task<List<ItemInfo?>> GetBranchAsync(string? path = null)
    {
-      throw new NotImplementedException();
+      _resultsLog.Clear();
+
+      QueryStringBuilder pars = new QueryStringBuilder();
+      pars.Add(QueryStringTag.SessionId, _lastSessionId);
+      pars.Add(TAG_ITEM_PATH, path);
+      List<ItemInfo> item = null;
+
+      var req = URI_BRANCH_ITEMS + pars.ToString();
+      try
+      {
+         item = await _client.GetDataFromJsonAsync<List<ItemInfo>>(req);
+      }
+      catch (Exception ex)
+      {
+         _resultsLog.Failed(ex);
+      }
+
+      return item;
+   }
+
+   /// <summary>
+   /// Add Data Item.
+   /// </summary>
+   /// <param name="item">item to ask</param>
+   /// <returns>created item is returned, else null</returns>
+   public List<ItemInfo?> GetBranch(string? path)
+   {
+      List<ItemInfo?>? items = null;
+      Task<List<ItemInfo?>> result = GetBranchAsync(path);
+      result.Wait();
+      if (result.Status == TaskStatus.RanToCompletion)
+      {
+         items = result.Result;
+      }
+      return items;
    }
 
    #endregion

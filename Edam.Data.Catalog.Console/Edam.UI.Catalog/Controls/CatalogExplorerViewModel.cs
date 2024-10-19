@@ -14,6 +14,7 @@ using Edam.UI.CatalogExplorer;
 using System.Collections.ObjectModel;
 using Edam.UI.Catalog.Models;
 using Edam.Diagnostics;
+using Edam.Application;
 
 // -----------------------------------------------------------------------------
 
@@ -43,11 +44,9 @@ public class CatalogExplorerViewModel : ObservableObject
     /// <summary>
     /// Initialize Catalog
     /// </summary>
-    public async void InitializeCatalog(AppModelState state)
+    public async Task InitializeCatalogAsync(AppModelState state)
     {
-        string connectionUri =
-            Environment.OSVersion.Platform == PlatformID.Other ?
-            state.GetDefaultConnectionString() : "";
+        string connectionUri = state.GetConnectionUri();
 
         _Catalog = await CatalogServiceHelper.GetCatalogAsync(
             connectionUri);

@@ -153,10 +153,10 @@ public class CatalogSystem
    /// </summary>
    /// <param name="path">file path that will return an item that </param>
    /// <returns>file item info is returned</returns>
-   public ItemInfo? GetItem(string path)
+   public async Task<ItemInfo?> GetItemAsync(string path)
    {
       var builder = GetBuilder();
-      var pitem = builder.GetItem(path);
+      var pitem = await builder.GetItemAsync(path);
       return pitem.Item;
    }
 

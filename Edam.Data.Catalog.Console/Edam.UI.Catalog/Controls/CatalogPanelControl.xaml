@@ -8,7 +8,8 @@
     xmlns:szer="using:CommunityToolkit.WinUI.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="400">
+    d:DesignWidth="400"
+    Loaded="UserControl_Loaded">
 
   <Grid Grid.Row="1" BorderBrush="LightGray" BorderThickness="1">
     <Grid.ColumnDefinitions>
@@ -24,16 +25,12 @@
         <RowDefinition Height="*" />
       </Grid.RowDefinitions>
 
-      <!--<StackPanel Grid.Row="0">
-        <ComboBox x:Name="CatalogContainer" PlaceholderText="Select Container" BorderBrush="#CFCFCF" />
-      </StackPanel>-->
-
       <local:CatalogContainerControl Grid.Row="0" x:Name="CatalogContainer" />
 
       <szer:GridSplitter Grid.Row="1" ResizeBehavior="BasedOnAlignment"
                        BorderBrush="LightGray" BorderThickness="1"/>
 
-      <local:CatalogExplorerControl Grid.Row="2" x:Name="CatalogExplorer" />
+      <!--<local:CatalogExplorerControl Grid.Row="2" x:Name="CatalogExplorer" />-->
     </Grid>
     
     <szer:GridSplitter Grid.Column="1" ResizeBehavior="BasedOnAlignment"

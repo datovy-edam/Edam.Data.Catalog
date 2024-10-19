@@ -9,6 +9,7 @@ using Edam.Application;
 using Edam.Data.CatalogModel;
 using Edam.DataObjects.Medias;
 using Edam.DataObjects.Requests;
+using System.ComponentModel;
 
 namespace Edam.Data.CatalogDb;
 
@@ -123,7 +124,7 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    /// Get Root Item of given container.
    /// </summary>
    /// <param name="containerId">container id</param>
-   /// <returns>instance of File-Item is returned</returns>
+   /// <returns>instance of Item is returned</returns>
    public ItemInfo GetContainerRootItem(Guid id)
    {
       var items = from item in DbContext.Items
@@ -275,6 +276,16 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    }
 
    /// <summary>
+   /// Get Branch items (of current container) async.
+   /// </summary>
+   /// <param name="path">path to fetch first level items</param>
+   /// <returns>Get list of items for given partial path</returns>
+   public async Task<List<ItemInfo>> GetBranchAsync(string? path = null)
+   {
+      return GetBranch(path);
+   }
+
+   /// <summary>
    /// Get Content Type.
    /// </summary>
    /// <param name="id">Container ID</param>
@@ -303,6 +314,21 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
          containerId = ContainerInfo.CONTAINER_ID_DEFAULT;
       }
       return containerId;
+   }
+
+   /// <summary>
+   /// Get Container.
+   /// </summary>
+   /// <param name="containerId"></param>
+   /// <param name="checkId">true to check ID</param>
+   /// <returns></returns>
+   public async Task<ContainerInfo?> GetContainerAsync(
+      string? containerId, bool checkId = true)
+   {
+      var cid = checkId ? GetContainerId(containerId) : containerId;
+      ContainerInfo container = DbContext.Containers.Where(
+         x => x.ContainerId == cid).FirstOrDefault();
+      return container;
    }
 
    /// <summary>
@@ -465,12 +491,12 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
          ritem = item;
          DbContext.Items.Add(item);
       }
-      else if (item.Id != iitem.Id)
-      {
-         item.Id = iitem.Id;
-         ritem = iitem;
-         DbContext.Items.Update(iitem);
-      }
+      //else if (item.Id != iitem.Id)
+      //{
+      //   item.Id = iitem.Id;
+      //   ritem = iitem;
+      //   DbContext.Items.Update(iitem);
+      //}
       else
       {
          ritem = iitem;
@@ -478,6 +504,16 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
       }
       DbContext.SaveChanges();
       return ritem;
+   }
+
+   /// <summary>
+   /// 
+   /// </summary>
+   /// <param name="item"></param>
+   /// <returns></returns>
+   public async Task<ItemInfo> AddItemAsync(ItemInfo item)
+   {
+      return AddItem(item);
    }
 
    /// <summary>
@@ -501,6 +537,20 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
          status = RequestStatus.Completed;
       }
       return status;
+   }
+
+   /// <summary>
+   /// Get Container Root Item Async.
+   /// </summary>
+   /// <param name="containerId">container Id to search</param>
+   /// <returns>found root item is returned</returns>
+   public async Task<ItemInfo> GetContainerRootItemAsync(Guid containerId)
+   {
+      if (containerId == null)
+      {
+         return null;
+      }
+      return GetContainerRootItem(containerId);
    }
 
    /// <summary>
@@ -561,6 +611,20 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
       item.Description = desc;
       item.FullPath = String.Empty;
       return item;
+   }
+
+   /// <summary>
+   /// Create Branch async.
+   /// </summary>
+   /// <param name="name">name of branch</param>
+   /// <param name="description">description</param>
+   /// <param name="containerId">container id [default: CurrentContainer.Id]
+   /// </param>
+   /// <returns>file item instance is returned</returns>
+   public async Task<ItemInfo> CreateBranchAsync(
+      string name, string? description = null, Guid? containerId = null)
+   {
+      return CreateBranch(name, description, containerId);
    }
 
    /// <summary>
@@ -629,6 +693,16 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
       }
       DbContext.SaveChanges();
       return ritem;
+   }
+
+   /// <summary>
+   /// Add given data item (or update) async.  Understand that a data item is 
+   /// uniquely identified by its name.
+   /// </summary>
+   /// <param name="item">add item</param>
+   public async Task<ItemDataInfo> AddItemAsync(ItemDataInfo item)
+   {
+      return AddItem(item);
    }
 
    /// <summary>

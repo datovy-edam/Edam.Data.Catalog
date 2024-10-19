@@ -64,7 +64,7 @@ public class CatalogInfo
    public CatalogInfo(ICatalogService service, string sessionId)
    {
       _CatalogService = service;
-      var container = service.SetContainer(sessionId, String.Empty);
+      //var container = service.SetContainer(sessionId, String.Empty);
    }
 
    /// <summary>
@@ -74,20 +74,21 @@ public class CatalogInfo
    /// <param name="buildTree">(optional) true to build the tree. 
    /// Default: false</param>
    /// <returns>Task is returned</returns>
-   public CatalogInfo InitializeCatalog(
+   public async Task<CatalogInfo> InitializeCatalogAsync(
       string containerId, bool buildTree = false)
    {
-      var container = _CatalogService.GetContainer(containerId);
+      var container = await _CatalogService.GetContainerAsync(containerId);
 
       // create root item...
-      var rootItem = _CatalogService.CreateRootItem();
+      var rootItem = await _CatalogService.GetContainerRootItemAsync(
+         _CatalogService.DefaultContainer.Id);
       RootPathItem = CatalogTreeBuilder.ToPathItem(rootItem);
 
       // build catalog tree
       if (buildTree)
       {
          var builder = new CatalogTreeBuilder(_CatalogService, this);
-         builder.BuildTree();
+         await builder.BuildTreeAsync();
       }
 
       // add catalog

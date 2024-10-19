@@ -52,7 +52,7 @@ public class CatalogBuilderServiceInstance :
          _SessionId = sessionId;
 
          _Catalog = new CatalogInfo(this, _SessionId);
-         _Catalog.InitializeCatalog("", false);
+         _Catalog.InitializeCatalogAsync("", false);
 
          _Builder = new CatalogTreeBuilder(this, Catalog);
       }
@@ -71,10 +71,10 @@ public class CatalogBuilderServiceInstance :
    /// </summary>
    /// <param name="item"></param>
    /// <returns></returns>
-   public override ItemInfo AddItem(ItemInfo item)
+   public async Task<ItemInfo> AddItemAsync(ItemInfo item)
    {
-      var pitem = Builder.GetItem(item);
-      var itm = base.AddItem(pitem.Item);
+      var pitem = await Builder.GetItemAsync(item);
+      var itm = await base.AddItemAsync(pitem.Item);
       return itm;
    }
 
