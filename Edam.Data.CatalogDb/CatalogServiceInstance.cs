@@ -154,6 +154,15 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    /// Get Containers.
    /// </summary>
    /// <returns>list of containers is returned</returns>
+   public async Task<List<ContainerInfo>> GetContainersAsync()
+   {
+      return await DbContext.Containers.ToListAsync<ContainerInfo>();
+   }
+
+   /// <summary>
+   /// Get Containers.
+   /// </summary>
+   /// <returns>list of containers is returned</returns>
    public List<ContainerInfo> GetContainers()
    {
       return DbContext.Containers.ToList<ContainerInfo>();

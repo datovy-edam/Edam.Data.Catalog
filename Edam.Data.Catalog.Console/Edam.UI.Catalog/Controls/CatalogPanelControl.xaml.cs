@@ -18,32 +18,49 @@ using Windows.Foundation.Collections;
 namespace Edam.UI.Catalog.Controls;
 public sealed partial class CatalogPanelControl : UserControl
 {
-
-    private AppModelState _state;
-    private bool _hasCatalog = false;
+    private CatalogViewModel _ViewModel = new CatalogViewModel();
 
     public CatalogPanelControl()
     {
         this.InitializeComponent();
     }
 
-    public async void InitializeCatalog(AppModelState state)
+    /// <summary>
+    /// Initialize Catalog.
+    /// </summary>
+    private async void InitializeCatalogAsync()
     {
-        this._state = state;
-        if (IsLoaded && !_hasCatalog)
+        if (_ViewModel.State != null && IsLoaded && !_ViewModel.HasCatalog)
         {
-            _hasCatalog = true;
-            //await CatalogExplorer.ViewModel.InitializeCatalogAsync(_state);
+            _ViewModel.HasCatalog = true;
+
+            CatalogExplorer.ViewModel.CatalogBase = _ViewModel;
+            CatalogContainer.ViewModel.CatalogBase = _ViewModel;
+
+            await CatalogExplorer.ViewModel.
+                InitializeCatalogAsync(_ViewModel.State);
+            await CatalogContainer.ViewModel.InitializeContainersAsync();
         }
     }
 
-    private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+    /// <summary>
+    /// Initialize Catalog with given state.
+    /// </summary>
+    /// <param name="state"></param>
+    public void InitializeCatalog(AppModelState state)
     {
-        if (_state == null || _hasCatalog)
-        {
-            return;
-        }
-        _hasCatalog = true;
-        //await CatalogExplorer.ViewModel.InitializeCatalogAsync(_state);
+        _ViewModel.State = state;
+        InitializeCatalogAsync();
     }
+
+    /// <summary>
+    /// After form is loaded try initializing the Catalog.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void UserControl_Loaded(object sender, RoutedEventArgs e)
+    {
+        InitializeCatalogAsync();
+    }
+
 }

@@ -37,7 +37,9 @@ public interface ICatalogService
    Task<ItemInfo> GetContainerRootItemAsync(Guid id);
    ItemInfo GetContainerRootItem(Guid containerId);
 
+   Task<List<ContainerInfo>> GetContainersAsync();
    List<ContainerInfo> GetContainers();
+
    List<ItemInfo> GetContainerItems(Guid containerId);
    ContentTypeInfo GetContentType(string contentTypeId);
    ItemDataInfo GetDataByName(Guid itemId, string name);

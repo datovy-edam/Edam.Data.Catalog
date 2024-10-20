@@ -23,54 +23,41 @@ namespace Edam.UI.Catalog.Controls;
 public class CatalogExplorerViewModel : ObservableObject
 {
 
-    public const string CATALOG_INITIALIZED = "CATALOG-INITIALIZED";
+    //private string? _defaultConnectionString;
+    //private INavigator _navigator;
 
-    private string? _defaultConnectionString;
-    private INavigator _navigator;
-
-    private CatalogInfo? _Catalog = null;
-    private CatalogItem RootItem = null;
-
-    public CatalogInfo? Catalog
-    {
-        get => _Catalog;
-    }
+    public CatalogViewModel CatalogBase { get; set; }
 
     public ObservableCollection<CatalogItem> DataSource { get; set; } =
         new ObservableCollection<CatalogItem>();
-
-    public NotificationEventHandler NotifyEvent { get; set; }
 
     /// <summary>
     /// Initialize Catalog
     /// </summary>
     public async Task InitializeCatalogAsync(AppModelState state)
     {
-        string connectionUri = state.GetConnectionUri();
-
-        _Catalog = await CatalogServiceHelper.GetCatalogAsync(
-            connectionUri);
+        await CatalogBase.GetCatalogAsync(state);
 
         // get root element observable item
         DataSource.Clear();
-        RootItem = GetData(_Catalog.RootTreeItem);
+        CatalogBase.RootItem = GetData(CatalogBase.Catalog.RootTreeItem);
 
         // don't show root item so add first level items (the children)
-        foreach(var itm in RootItem.Children)
+        foreach(var itm in CatalogBase.RootItem.Children)
         {
             DataSource.Add(itm);
         }
 
-        if (NotifyEvent != null)
+        if (CatalogBase.NotifyEvent != null)
         {
             var args = new NotificationEventArgs
             {
                 Results = new ResultLog(),
-                EventID = CATALOG_INITIALIZED,
-                Data = _Catalog
+                EventID = CatalogViewModel.CATALOG_INITIALIZED,
+                Data = CatalogBase.Catalog
             };
             args.Results.Succeeded();
-            NotifyEvent(this, args);
+            CatalogBase.NotifyEvent(this, args);
         }
     }
 

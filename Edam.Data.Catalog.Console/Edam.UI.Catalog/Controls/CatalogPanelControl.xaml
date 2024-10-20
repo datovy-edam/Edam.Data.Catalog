@@ -30,7 +30,7 @@
       <szer:GridSplitter Grid.Row="1" ResizeBehavior="BasedOnAlignment"
                        BorderBrush="LightGray" BorderThickness="1"/>
 
-      <!--<local:CatalogExplorerControl Grid.Row="2" x:Name="CatalogExplorer" />-->
+      <local:CatalogExplorerControl Grid.Row="2" x:Name="CatalogExplorer" />
     </Grid>
     
     <szer:GridSplitter Grid.Column="1" ResizeBehavior="BasedOnAlignment"

@@ -17,19 +17,25 @@
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
 
-    <ctrls:DockPanel Grid.Row="0" Height="34" Background="White" Padding="10,0">
+    <!--<ctrls:DockPanel Grid.Row="0" Height="34" Background="White" Padding="10,0">-->
+    <StackPanel Grid.Row="0" Orientation="Horizontal" Height="34" Background="White" Padding="10,0"
+              BorderBrush="LightGray" BorderThickness="0,0,0,1">
       <TextBlock Width="76" Padding="0,8" Text="Containers"/>
-      <StackPanel ctrls:DockPanel.Dock="Right" FlowDirection="RightToLeft" Orientation="Horizontal">
-        <AppBarButton Icon="Delete" MaxWidth="30" ToolTipService.ToolTip="Delete Selected Item" />
+      <StackPanel ctrls:DockPanel.Dock="Right" Orientation="Horizontal">
         <AppBarButton Icon="Add" MaxWidth="30" ToolTipService.ToolTip="Add an Item" />
+        <AppBarButton Icon="Delete" MaxWidth="30" ToolTipService.ToolTip="Delete Selected Item" />
       </StackPanel>
-    </ctrls:DockPanel>
+    </StackPanel>
+    <!--</ctrls:DockPanel>-->
 
-    <ListView Grid.Row="1" ItemsSource="{x:Bind ViewModel.DataSource}">
+    <ListView Grid.Row="1" ItemsSource="{x:Bind ViewModel.DataSource}" MinHeight="40">
       <ListView.ItemTemplate>
         <DataTemplate x:DataType="local:ContainerInfo">
           <ListViewItem>
-            <TextBlock Text="ContainerId" />
+            <StackPanel Orientation="Horizontal" Margin="16,0,0,0">
+              <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEA3A;" FontSize="14" Margin="0" />
+              <TextBlock Margin="14,0,0,0" Text="{Binding ContainerId}" FontSize="14" Padding="0,2,0,0" />
+            </StackPanel>
           </ListViewItem>
         </DataTemplate>
       </ListView.ItemTemplate>
