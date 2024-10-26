@@ -45,7 +45,10 @@ public interface ICatalogService
    ItemDataInfo GetDataByName(Guid itemId, string name);
 
    ItemInfo? GetItem(Guid itemId);
+
+   Task<ItemInfo> GetItemByPathAsync(string path);
    ItemInfo GetItemByPath(string name);
+
    RequestStatus DeleteItem(Guid itemId);
 
    Task<List<ItemInfo?>> GetBranchAsync(string? path = null);

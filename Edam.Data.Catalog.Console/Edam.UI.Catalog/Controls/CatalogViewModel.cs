@@ -36,4 +36,24 @@ public class CatalogViewModel
 
     }
 
+    /// <summary>
+    /// Post Item.
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="payload"></param>
+    /// <returns></returns>
+    public async Task<ItemDataInfo> PostItem(string path, byte[] payload)
+    {
+        ItemDataInfo? itemData = null;
+        CatalogTreeBuilder builder =
+            new CatalogTreeBuilder(Catalog.CatalogService, Catalog);
+        var item = await builder.GetItemAsync(path);
+        if (payload != null && payload.Length > 0)
+        {
+            itemData = item.ToItemData(payload);
+            var rItem = await Catalog.CatalogService.AddItemAsync(itemData);
+        }
+        return itemData;
+    }
+
 }

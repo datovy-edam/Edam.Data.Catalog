@@ -35,6 +35,23 @@ namespace Edam.Data.CatalogModel
       }
 
       /// <summary>
+      /// To Item Data...
+      /// </summary>
+      /// <param name="data">data</param>
+      /// <returns>an instance of ItemData is returned</returns>
+      public ItemDataInfo ToItemData(byte[] data)
+      {
+         ItemDataInfo item = new ItemDataInfo();
+         item.ContentTypeId = ContentType;
+         //item.Item = Item;
+         item.ItemId = Item.Id;
+         item.Name = Item.Name;
+         item.Data = data;
+
+         return item;
+      }
+
+      /// <summary>
       /// Get Content Type based on MediaId and Content TypeId.
       /// </summary>
       /// <returns>instance of ContentType is returned</returns>

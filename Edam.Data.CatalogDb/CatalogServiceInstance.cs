@@ -186,6 +186,16 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    /// </summary>
    /// <param name="path">unique full path</param>
    /// <returns>Get list of data items for given file-item id</returns>
+   public async Task<ItemInfo> GetItemByPathAsync(string path)
+   {
+      return GetItemByPath(path);
+   }
+
+   /// <summary>
+   /// Get Item by its unique full path.
+   /// </summary>
+   /// <param name="path">unique full path</param>
+   /// <returns>Get list of data items for given file-item id</returns>
    public ItemInfo GetItemByPath(string path)
    {
       var ditems = from x in DbContext.Items
@@ -680,27 +690,39 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    /// identified by its name.
    /// </summary>
    /// <param name="item">add item</param>
-   public virtual ItemDataInfo AddItem(ItemDataInfo item)
+   public async virtual Task<ItemDataInfo> AddItemAsync(ItemDataInfo item)
    {
+      bool saveIt = true;
       ItemDataInfo ritem;
       var ditem = GetDataByName(item.ItemId, item.Name);
       if (ditem == null)
       {
+         var contentType = GetContentType(item.ContentTypeId);
+         item.ContentType = contentType;
          ritem = item;
          DbContext.DataItems.Add(item);
       }
-      else if (item.Id != ditem.Id)
+      else if (item.Id == ditem.Id)
       {
-         item.Id = ditem.Id;
          ritem = ditem;
          DbContext.DataItems.Update(ditem);
       }
       else
       {
          ritem = ditem;
-         return ritem;
+         saveIt = false;
       }
-      DbContext.SaveChanges();
+      if (saveIt)
+      {
+         try
+         {
+            await DbContext.SaveChangesAsync();
+         }
+         catch(Exception ex)
+         {
+
+         }
+      }
       return ritem;
    }
 
@@ -709,9 +731,16 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    /// uniquely identified by its name.
    /// </summary>
    /// <param name="item">add item</param>
-   public async Task<ItemDataInfo> AddItemAsync(ItemDataInfo item)
+   public ItemDataInfo AddItem(ItemDataInfo item)
    {
-      return AddItem(item);
+      ItemDataInfo dinfo = null;
+      var task = AddItemAsync(item);
+      task.Wait();
+      if (task.Status == TaskStatus.RanToCompletion)
+      {
+         dinfo = task.Result;
+      }
+      return dinfo;
    }
 
    /// <summary>

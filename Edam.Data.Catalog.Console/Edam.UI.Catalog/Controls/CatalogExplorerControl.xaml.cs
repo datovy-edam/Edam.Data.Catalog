@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Edam.UI.Catalog.Models;
 using Edam.UI.CatalogExplorer;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -39,7 +40,9 @@ public sealed partial class CatalogExplorerControl : UserControl
 
     private async void UploadFolder_Click(object sender, RoutedEventArgs e)
     {
-        var folder = await AppSession.GetFolderAsync();
+        //var folder = await AppSession.GetFolderAsync();
+        var catFolder = new CatalogFolder(_ViewModel.CatalogBase);
+        await catFolder.FolderToCatalogAsync();
     }
 
 }

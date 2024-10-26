@@ -80,7 +80,8 @@ public class CatalogServiceHelper
         if (Environment.OSVersion.Platform == PlatformID.Other)
         {
             // initialize repository
-            result = await CatalogServiceHelper.GetClientInstanceAsync(connectionUri);
+            result = await 
+                CatalogServiceHelper.GetClientInstanceAsync(connectionUri);
         }
         else
         {

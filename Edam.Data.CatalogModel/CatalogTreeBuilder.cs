@@ -267,10 +267,24 @@ public class CatalogTreeBuilder
    /// <returns>instance of catalog item is returned</returns>
    public async Task<CatalogPathItem> GetItemAsync(string fullPath)
    {
+      CatalogPathItem item = null;
       ItemInfo fitem = new ItemInfo();
-      fitem.FullPath = fullPath;
-      CatalogPathItem item = new CatalogPathItem(fitem);
-      var citem = await GetItemAsync(item);
+      var pitem = await _Service.GetItemByPathAsync(fullPath);
+      if (pitem != null)
+      {
+         fitem = pitem;
+      }
+      else
+      {
+         fitem.FullPath = fullPath;
+      }
+
+      item = new CatalogPathItem(fitem);
+      if (pitem == null)
+      {
+         var citem = await GetItemAsync(item);
+      }
+
       return item;
    }
 

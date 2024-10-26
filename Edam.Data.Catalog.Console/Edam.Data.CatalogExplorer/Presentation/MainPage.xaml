@@ -15,7 +15,9 @@
       <RowDefinition />
     </Grid.RowDefinitions>
 
-    <utu:NavigationBar Content="{Binding Title}" />
+    <utu:NavigationBar Content="{Binding Title}">
+      
+    </utu:NavigationBar>
 
     <cat:CatalogPanelControl x:Name="CatalogPanel" Grid.Row="1" />
   </Grid>
