@@ -85,6 +85,13 @@ namespace Edam.Data.CatalogModel
          }
 
          MediaFormat = MediaContentTypeHelper.GetMediaFormat(Extension);
+         if (!string.IsNullOrWhiteSpace(Extension) &&
+            MediaFormat == MediaFormat.Unknown &&
+            Item.ItemType != TreeItemType.Branch)
+         {
+            MediaFormat = MediaFormat.TextFile;
+         }
+
          ContentType = MediaFormat == MediaFormat.Unknown ? string.Empty :
             MediaContentTypeHelper.ToContentTypeText(MediaFormat);
 

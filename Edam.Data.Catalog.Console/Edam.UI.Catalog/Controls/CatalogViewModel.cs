@@ -56,4 +56,16 @@ public class CatalogViewModel
         return itemData;
     }
 
+    /// <summary>
+    /// Get Item Data.
+    /// </summary>
+    /// <param name="item">item instance of CatalogItem</param>
+    /// <returns>ItemDataInfo instance is returned</returns>
+    public async Task<List<ItemDataInfo>> GetItemDataAsync(CatalogItem item)
+    {
+        CatalogPathItem pitem = item.Item.Tag as CatalogPathItem;
+        var idata = await Catalog.CatalogService.GetItemDataAsync(pitem.Item.Id);
+        return idata;
+    }
+
 }

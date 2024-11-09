@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Edam.UI.Catalog.Models;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -23,6 +24,26 @@ public sealed partial class CatalogPanelControl : UserControl
     public CatalogPanelControl()
     {
         this.InitializeComponent();
+        CatalogExplorer.ViewModel.NotifyEventAsync = ManageNotification;
+    }
+
+    /// <summary>
+    /// Manage Item Content Notification events...
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    /// <returns></returns>
+    private async Task ManageNotification(
+        object sender, ItemContentNotificationArgs args)
+    {
+        switch(args.Type)
+        {
+            case ItemContentNotificationType.SetContent:
+                await EditorTabs.ManageNotificationAsync(sender, args);
+                break;
+            default:
+                break;
+        }
     }
 
     /// <summary>

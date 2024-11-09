@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Edam.Data.CatalogModel;
 using Edam.UI.Catalog.Models;
 using Edam.UI.CatalogExplorer;
 using Microsoft.UI.Xaml;
@@ -21,6 +22,7 @@ using Windows.Storage.Pickers;
 namespace Edam.UI.Catalog.Controls;
 public sealed partial class CatalogExplorerControl : UserControl
 {
+    private object _lastSelected = null;
     private CatalogExplorerViewModel _ViewModel =
         new CatalogExplorerViewModel();
     public CatalogExplorerViewModel ViewModel
@@ -45,4 +47,31 @@ public sealed partial class CatalogExplorerControl : UserControl
         await catFolder.FolderToCatalogAsync();
     }
 
+    private void TreeView_SelectionChanged(
+        TreeView sender, TreeViewSelectionChangedEventArgs args)
+    {
+        _lastSelected = args.AddedItems.Count > 0 ?
+            args.AddedItems.First() : null;
+    }
+
+    private void TreeView_DoubleTapped(
+        object sender, DoubleTappedRoutedEventArgs e)
+    {
+        ViewModel.SetEditorTextContent(_lastSelected as CatalogItem);
+    }
+}
+
+public class ExplorerItemTemplateSelector : DataTemplateSelector
+{
+    public DataTemplate FolderTemplate { get; set; }
+    public DataTemplate FileTemplate { get; set; }
+
+    protected override DataTemplate SelectTemplateCore(object item)
+    {
+        var explorerItem = (CatalogItem)item;
+        if (explorerItem.ItemType == DataObjects.Trees.TreeItemType.Branch)
+            return FolderTemplate;
+
+        return FileTemplate;
+    }
 }

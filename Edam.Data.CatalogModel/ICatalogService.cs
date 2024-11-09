@@ -61,6 +61,7 @@ public interface ICatalogService
    ItemDataInfo AddItem(ItemDataInfo item);
 
    ItemDataInfo GetData(Guid dataId);
+   Task<List<ItemDataInfo>> GetItemDataAsync(Guid itemId);
    List<ItemDataInfo> GetItemData(Guid itemId);
    RequestStatus DeleteItemData(Guid itemId);
    RequestStatus DeleteData(Guid dataId);

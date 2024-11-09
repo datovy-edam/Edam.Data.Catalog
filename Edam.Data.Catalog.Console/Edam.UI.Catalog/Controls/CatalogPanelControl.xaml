@@ -36,7 +36,8 @@
     <szer:GridSplitter Grid.Column="1" ResizeBehavior="BasedOnAlignment"
                        BorderBrush="LightGray" BorderThickness="1"/>
 
-    <StackPanel Grid.Column="2" Background="LightGray">
-    </StackPanel>
+    <Grid Grid.Column="2" Background="LightGray">
+      <local:EditorTabsControl x:Name="EditorTabs" />
+    </Grid>
   </Grid>
 </UserControl>

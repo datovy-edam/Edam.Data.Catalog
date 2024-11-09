@@ -15,6 +15,8 @@ using System.Collections.ObjectModel;
 using Edam.UI.Catalog.Models;
 using Edam.Diagnostics;
 using Edam.Application;
+using Edam.DataObjects.Trees;
+using Microsoft.UI.Xaml.Input;
 
 // -----------------------------------------------------------------------------
 
@@ -30,6 +32,8 @@ public class CatalogExplorerViewModel : ObservableObject
 
     public ObservableCollection<CatalogItem> DataSource { get; set; } =
         new ObservableCollection<CatalogItem>();
+
+    public ItemContentNotificationAsync NotifyEventAsync = null;
 
     /// <summary>
     /// Initialize Catalog
@@ -72,6 +76,7 @@ public class CatalogExplorerViewModel : ObservableObject
         {
             Name = item.Name,
             Item = item,
+            ItemType = item.Type,
         };
 
         foreach(var node in item.Children)
@@ -79,6 +84,36 @@ public class CatalogExplorerViewModel : ObservableObject
             itm.Children.Add(GetData(node));
         }
         return itm;
+    }
+
+    private async Task NotifyEvent(IItemContent item)
+    {
+        if (NotifyEventAsync != null)
+        {
+            ItemContentNotificationArgs args =
+                new ItemContentNotificationArgs(
+                    ItemContentNotificationType.SetContent, item);
+            await NotifyEventAsync(this, args);
+        }
+    }
+
+    public async Task SetEditorTextContent(CatalogItem item)
+    {
+        if (item != null)
+        {
+            var citem = item as CatalogItem;
+            var items = await CatalogBase.GetItemDataAsync(citem);
+            var data = items != null && items.Count > 0 ? items[0] : null;
+            if (data != null)
+            {
+                ItemContent icontent = new ItemContent
+                {
+                    Item = citem.Item,
+                    Content = data.DataText
+                };
+                NotifyEvent(icontent as IItemContent);
+            }
+        }
     }
 }
 
@@ -88,6 +123,7 @@ public class CatalogExplorerViewModel : ObservableObject
 public class CatalogItem
 {
     public string Name { get; set; }
+    public TreeItemType ItemType { get; set; }
     public ObservableCollection<CatalogItem> Children { get; set; } = 
         new ObservableCollection<CatalogItem>();
     public CatalogItemInfo Item { get; set; }

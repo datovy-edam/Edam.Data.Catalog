@@ -36,6 +36,9 @@
     <None Remove="Controls\CatalogContainerControl.xaml" />
     <None Remove="Controls\CatalogExplorerControl.xaml" />
     <None Remove="Controls\CatalogPanelControl.xaml" />
+    <None Remove="Controls\EditorTabsControl.xaml" />
+    <None Remove="Controls\MonacoEditorControl.xaml" />
+    <None Remove="Controls\MonacoEditorPage.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -51,6 +54,7 @@
     <ProjectReference Include="..\..\Edam.Data.CatalogDb\Edam.Data.CatalogDb.csproj" />
     <ProjectReference Include="..\..\Edam.Data.CatalogModel\Edam.Data.CatalogModel.csproj" />
     <ProjectReference Include="..\..\Edam.Data.CatalogServiceClient\Edam.Data.CatalogServiceClient.csproj" />
+    <ProjectReference Include="..\..\MonacoEditor\MonacoEditor.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -85,6 +89,48 @@
 
   <ItemGroup>
     <Page Update="Controls\CatalogContainerControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Controls\EditoTabsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Controls\EditorTabsControl.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Controls\EditorTabsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Controls\MonacoEditorControl.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Controls\MonacoEditorControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="MonacoEditorPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Controls\MonacoEditorPage.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Controls\MonacoEditorPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

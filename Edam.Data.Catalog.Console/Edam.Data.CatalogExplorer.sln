@@ -30,6 +30,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edam.Tests.CatalogServiceCl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edam.Data.CatalogService", "..\Edam.Data.CatalogService\Edam.Data.CatalogService.csproj", "{25CFAF46-C373-4E63-824C-C78FBDE2AA0F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MonacoEditor", "..\MonacoEditor\MonacoEditor.csproj", "{64DAEF9C-FB78-414E-9B86-0419F9A2349E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +68,10 @@ Global
 		{25CFAF46-C373-4E63-824C-C78FBDE2AA0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25CFAF46-C373-4E63-824C-C78FBDE2AA0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25CFAF46-C373-4E63-824C-C78FBDE2AA0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64DAEF9C-FB78-414E-9B86-0419F9A2349E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64DAEF9C-FB78-414E-9B86-0419F9A2349E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64DAEF9C-FB78-414E-9B86-0419F9A2349E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64DAEF9C-FB78-414E-9B86-0419F9A2349E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -77,6 +83,7 @@ Global
 		{EF7C8488-FBFF-489E-B682-494458F24B7A} = {DAA062D6-F8A1-42C2-9203-AA04E7C15240}
 		{1C1B4696-DEDE-4866-B28B-CBACA5CAF064} = {0066CE5C-FD46-4B23-971B-D7639330DE68}
 		{25CFAF46-C373-4E63-824C-C78FBDE2AA0F} = {DAA062D6-F8A1-42C2-9203-AA04E7C15240}
+		{64DAEF9C-FB78-414E-9B86-0419F9A2349E} = {DAA062D6-F8A1-42C2-9203-AA04E7C15240}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9E60B223-C389-4591-981C-CF364A93DBB8}

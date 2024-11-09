@@ -226,13 +226,23 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    /// Get Item Data entries.
    /// </summary>
    /// <param name="id">File-Item ID</param>
-   /// <returns>Get list of data items for given file-item id</returns>
+   /// <returns>Get list of data items for given item id</returns>
    public List<ItemDataInfo> GetItemData(Guid id)
    {
       var ditems = from x in DbContext.DataItems
-                   where x.Id == id
+                   where x.ItemId == id
                    select x;
       return ditems.ToList<ItemDataInfo>();
+   }
+
+   /// <summary>
+   /// Get Item Data entries async.
+   /// </summary>
+   /// <param name="id">File-Item ID</param>
+   /// <returns>Get list of data items for given file-item id</returns>
+   public async Task<List<ItemDataInfo>> GetItemDataAsync(Guid id)
+   {
+      return GetItemData(id);
    }
 
    /// <summary>
