@@ -34,6 +34,7 @@ public class ItemInfo
 
    public TreeItemType ItemType { get; set; } = TreeItemType.Branch;
 
+   [JsonIgnore]
    public virtual ICollection<ItemDataInfo> DataItems { get; set; }
 
    public DateTimeOffset CreatedDate { get; set; } = DateTimeOffset.Now;

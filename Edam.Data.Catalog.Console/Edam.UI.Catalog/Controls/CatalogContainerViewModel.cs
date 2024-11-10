@@ -8,6 +8,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 using Edam.Data.CatalogModel;
 using Edam.Diagnostics;
+using Edam.UI.Catalog.Models;
 
 namespace Edam.UI.Catalog.Controls;
 
@@ -16,8 +17,27 @@ public class CatalogContainerViewModel : ObservableObject
 
     public CatalogViewModel CatalogBase { get; set; }
 
-    public ObservableCollection<ContainerInfo> DataSource { get; set; } =
-        new ObservableCollection<ContainerInfo>();
+    private Visibility _containerEditVisibility;
+    public Visibility ContainerEditVisibility
+    {
+        get { return _containerEditVisibility; }
+        set
+        {
+            if (_containerEditVisibility != value)
+            {
+                _containerEditVisibility = value;
+                OnPropertyChanged(nameof(ContainerEditVisibility));
+            }
+        }
+    }
+
+    public ObservableCollection<ContainerItem> DataSource { get; set; } =
+        new ObservableCollection<ContainerItem>();
+
+    public CatalogContainerViewModel()
+    {
+        ContainerEditVisibility = Visibility.Collapsed;
+    }
 
     /// <summary>
     /// Initialize Catalog
@@ -25,12 +45,13 @@ public class CatalogContainerViewModel : ObservableObject
     public async Task InitializeContainersAsync()
     {
         DataSource.Clear();
-        var list = await CatalogBase.Catalog.
-            CatalogService.GetContainersAsync();
+        var lst = await CatalogBase.Catalog.CatalogService.GetContainersAsync();
 
-        foreach(var item in list)
+        foreach(var item in lst)
         {
-            DataSource.Add(item);
+            var container = new ContainerItem();
+            container.Container = item;
+            DataSource.Add(container);
         }
     }
 

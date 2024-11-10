@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Edam.UI.Catalog.Models;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -25,5 +26,34 @@ public sealed partial class CatalogContainerControl : UserControl
     public CatalogContainerControl()
     {
         this.InitializeComponent();
+        this.DataContext = ViewModel;
+        
+    }
+
+    private void ToggleContenerEditor()
+    {
+        ContainerEditor.Visibility =
+            ContainerEditor.Visibility == Visibility.Visible ?
+               Visibility.Collapsed : Visibility.Visible;
+    }
+
+    private void AppBarButton_Click(object sender, RoutedEventArgs e)
+    {
+        var item = ListViewer.SelectedItem as ContainerItem;
+        ToggleContenerEditor();
+    }
+
+    private void TextBox_KeyUp(object sender, KeyRoutedEventArgs e)
+    {
+        var econtrol = sender as TextBox;
+        if (e.Key == Windows.System.VirtualKey.Enter)
+        {
+            var item = econtrol.DataContext as ContainerItem;
+        }
+    }
+
+    private void CancelContainerEditor_Click(object sender, RoutedEventArgs e)
+    {
+        ToggleContenerEditor();
     }
 }

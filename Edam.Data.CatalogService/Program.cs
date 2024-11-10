@@ -260,6 +260,23 @@ app.MapGet("/catalogservice/catalog/data/item/name", (
 });
 
 // get catalog item
+app.MapGet("/catalogservice/catalog/data/item/id", (
+   string sessionId, Guid id) =>
+{
+   string ritem = null;
+   WebAppService.SetupSession(sessionId);
+   //if (sessionId != WebAppService.SessionId)
+   //{
+   //   return null;
+   //}
+
+   List<ItemDataInfo> items =
+      appService.CatalogSystem.Instance.GetItemData(id);
+
+   return items;
+});
+
+// get catalog item
 app.MapDelete("/catalogservice/catalog/data/item/id", (
    string sessionId, Guid id) =>
 {
