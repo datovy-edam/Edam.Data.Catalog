@@ -71,9 +71,61 @@ http URI if a web service is required.  If not provided it must be set using
 the main project appsettings.json setting the `DefaultConnectionString` and/or
 the `CatalogServiceBaseUri`.
 
+## Prepare the Catalog DB
+To initialize or access the Catalog database (DB) make sure to update the
+windows application and Catalog Service projects `appsettings.json`
+ConnectionStrings or other keys, therefore make sure to update all pointing to
+your MS-SQL database instance.
+
+When running the Catalog Explorer under the windows app or webassembly browser
+the Catalog database (DB) will be created if it does not exists.
+
+## Testing the Catalog Explorer in WebAssembly
+In the Windows Explorer find the CatalogService solution that should be relative
+to:
+
+```
+...Edam.Libraries/Edam.Data.Catalog/Edam.Data.CatalogService/
+```
+
+Open the Edam.Data.CatalogService.sln solution in VisualStudio and Debug or run
+it.  A Browser instance will open or you could search for:
+
+```
+https://localhost:7069/catalogservice
+```
+
+After searching for the above resource you will get a message about a page that
+can't be found. To submit requests to the service run the CatalogExplorer app in
+Windows or a Browser. Or browse for:
+
+```
+https://localhost:7069/catalogservice/container/list?sessionId=&containerId
+```
+Note that this request takes 2 arguments "SessionId" and "ContainerId".  For now
+The session ID's are not validated and subsequently it will return the list of
+availables containers, for example:
+```
+[
+    {
+        "id": "9a269989-5673-4a15-a1fc-12f4660c62ae",
+        "containerId": "default",
+        "description": "Default",
+        "contentType": "application/json",
+        "catalog": "{}",
+        "createdDate": "2024-09-29T17:30:59.8181393-04:00",
+        "updatedDate": "2024-09-29T17:30:59.8181467-04:00",
+        "recordStatusDate": "2024-09-29T17:30:59.8181475-04:00",
+        "recordStatusCode": "Active"
+    }
+]
+```
+
+Also, note that every Catalog have a "default" container.
+
 ## What is next?
 
-- Test services under the Windows platform.
-- Test services under WebAssembly platform.
+- Continue adding functionality to the Catalog Explorer.
+- 
 
 
