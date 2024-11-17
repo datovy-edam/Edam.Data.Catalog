@@ -9,7 +9,7 @@ using Edam.Application;
 using Edam.Data.CatalogModel;
 using Edam.DataObjects.Medias;
 using Edam.DataObjects.Requests;
-using System.ComponentModel;
+using Edam.Diagnostics;
 
 namespace Edam.Data.CatalogDb;
 
@@ -418,26 +418,47 @@ public class CatalogServiceInstance : ICatalogService, IDisposable
    /// <returns>container info is returned</returns>
    public ContainerInfo EnlistContainer(string containerId, string description)
    {
-      var container = GetContainer(containerId);
-      if (container == null || container.ContainerId != containerId)
-      {
-         // prepare container
-         container = new();
-         container.ContainerId = containerId;
-         container.Description = description;
-         DbContext.Containers.Add(container);
+      ContainerInfo container = null;
+      ResultLog results = new ResultLog();
 
-         // add root item
-         CreateRootItem(container.Id);
-      }
-      else if (container.Description != description)
+      if (String.IsNullOrWhiteSpace(containerId))
       {
-         container.Description += description;
-         DbContext.SaveChanges();
+         results.Failed(EventCode.NameExpectedNoneFound);
+         container = new ContainerInfo();
+         container.ContainerId = String.Empty;
+         return container;
       }
 
-      // new container is the current container...
-      CurrentContainer = container;
+      try
+      {
+         container = GetContainer(containerId);
+         if (container == null || container.ContainerId != containerId)
+         {
+            // prepare container
+            container = new();
+            container.ContainerId = containerId;
+            container.Description = description;
+            DbContext.Containers.Add(container);
+
+            // add root item
+            CreateRootItem(container.Id);
+         }
+         else if (container.Description != description)
+         {
+            container.Description += description;
+            DbContext.SaveChanges();
+         }
+
+         // new container is the current container...
+         CurrentContainer = container;
+         results.Succeeded();
+      }
+      catch (Exception ex)
+      {
+         container = new ContainerInfo();
+         container.ContainerId = string.Empty;
+         results.Failed(ex);
+      }
 
       return container;
    }
