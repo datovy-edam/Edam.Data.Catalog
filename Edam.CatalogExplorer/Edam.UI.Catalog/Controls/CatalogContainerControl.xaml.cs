@@ -11,6 +11,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using Newtonsoft.Json.Converters;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
@@ -30,6 +31,8 @@ public sealed partial class CatalogContainerControl : UserControl
         
     }
 
+    #region -- 4.00 - Container Support
+
     private void ToggleContenerEditor()
     {
         ContainerEditor.Visibility =
@@ -37,7 +40,7 @@ public sealed partial class CatalogContainerControl : UserControl
                Visibility.Collapsed : Visibility.Visible;
     }
 
-    private void TextBox_KeyUp(object sender, KeyRoutedEventArgs e)
+    private void ContainerIdTextBox_KeyUp(object sender, KeyRoutedEventArgs e)
     {
         var econtrol = sender as TextBox;
         if (e.Key == Windows.System.VirtualKey.Enter)
@@ -59,7 +62,14 @@ public sealed partial class CatalogContainerControl : UserControl
 
     private void SaveContainer_Click(object sender, PointerRoutedEventArgs e)
     {
-        ViewModel.AddContainer(ContainerId.Text);
-        ToggleContenerEditor();
+        var results = ViewModel.AddContainer(ContainerId.Text);
+        if (results == Diagnostics.EventCode.Success)
+        {
+            ToggleContenerEditor();
+            ContainerId.Text = String.Empty;
+        }
     }
+
+    #endregion
+
 }

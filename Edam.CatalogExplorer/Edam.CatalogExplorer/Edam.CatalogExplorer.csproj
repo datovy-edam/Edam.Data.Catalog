@@ -54,7 +54,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Edam.Data.CatalogDb\Edam.Data.CatalogDb.csproj" />
     <ProjectReference Include="..\..\Edam.Data.CatalogModel\Edam.Data.CatalogModel.csproj" />
-    <ProjectReference Include="..\Edam.UI.Catalog\Edam.UI.Catalog.csproj" />
+    <ProjectReference Include="..\Edam.UI.Catalog\Edam.UI.CatalogExplorer.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="appsettings.json">

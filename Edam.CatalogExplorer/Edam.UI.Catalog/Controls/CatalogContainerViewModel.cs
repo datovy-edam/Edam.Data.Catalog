@@ -46,6 +46,11 @@ public class CatalogContainerViewModel : ObservableObject
     /// <returns>EventCode is returned (Success or InsertUpdateFailed)</returns>
     public EventCode AddContainer(string name)
     {
+        if (String.IsNullOrWhiteSpace(name))
+        {
+            return EventCode.NameExpectedNoneFound;
+        }
+
         EventCode added = EventCode.Success;
         var description = Edam.Text.Convert.ToProperCase(name);
         var container = CatalogBase.Catalog.CatalogService.
@@ -55,6 +60,12 @@ public class CatalogContainerViewModel : ObservableObject
         {
             var results = new ResultLog();
             results.Failed(EventCode.InsertUpdateFailed);
+        }
+        else
+        {
+            var item = new ContainerItem();
+            item.Container = container;
+            DataSource.Add(item);
         }
         return added;
     }

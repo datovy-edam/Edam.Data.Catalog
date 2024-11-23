@@ -83,7 +83,7 @@ public partial class App : Application
                 .UseNavigation(RegisterRoutes)
             );
         MainWindow = builder.Window;
-
+        this.MainWindow.Title = "EDAM Catalog Explorer";
 #if DEBUG
         MainWindow.EnableHotReload();
 #endif

@@ -10,6 +10,13 @@ API will include all the expected functionality to allow access to file and
 folders for EDAM Projects but still these services should be independent and its
 functionality applicable to any application.
 
+## Catalog Explorer Console (Solution)
+The solution and project can be found in:
+
+```
+Edam.Libraries/Edam.Data.Catalog/Edam.CatalogExplorer/Edam.CatalogExplorer.Console.sln
+```
+
 ## Catalog Repository
 This first implementation uses an EF based repository to manage Containers,
 (File) Items, and Item Data (Files), details follow:
@@ -123,7 +130,24 @@ availables containers, for example:
 
 Also, note that every Catalog have a "default" container.
 
-## What is next?
+# Libraries
+
+Some notes about used Libraries follow.
+
+## Monaco Editor
+
+The Monaco Editor library is based on a project that was downlooaded from GitHub
+package named `WinUI.Monaco-Editor`.
+
+This library was modified to allow multiple instances of the Editor (see updates
+in the `Editor Core` region in the `MonacoEditor.xaml.cs` file).  As
+downloaded when a the control is revisited the editor reinitialized resources and
+previously editor context is not preserve.  This was fixed by calling the
+`InitializeEditor` method only once and not every time is revisited.  To understand
+what was modified you need to compare the original project from GitHub to the
+`MonacoEditor` code as available in this solution.
+
+# What is next?
 
 - Continue adding functionality to the Catalog Explorer.
 - 

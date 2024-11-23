@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edam.Data.CatalogDb", "..\Edam.Data.CatalogDb\Edam.Data.CatalogDb.csproj", "{AC876F7F-9D0B-4706-964D-BD391058A4CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edam.UI.Catalog", "Edam.UI.Catalog\Edam.UI.Catalog.csproj", "{602BE5FC-58EA-4DFD-A325-8C8220FBEDC0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edam.UI.CatalogExplorer", "Edam.UI.Catalog\Edam.UI.CatalogExplorer.csproj", "{602BE5FC-58EA-4DFD-A325-8C8220FBEDC0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edam.Data.CatalogModel", "..\Edam.Data.CatalogModel\Edam.Data.CatalogModel.csproj", "{2AC37567-2244-4295-B5F3-8BC3C6A692DD}"
 EndProject

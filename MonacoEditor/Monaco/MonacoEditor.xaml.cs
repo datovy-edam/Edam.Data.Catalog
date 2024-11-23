@@ -369,6 +369,7 @@ public sealed partial class MonacoEditor : UserControl, IMonacoEditor, IMonacoCo
       // load launch html file
       string monacoHtmlFile = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, HTML_LAUNCH_FILE);
       this.MonacoEditorWebView.Source = new Uri(monacoHtmlFile);
+
    }
 
    public async Task InitializeEditorModel()

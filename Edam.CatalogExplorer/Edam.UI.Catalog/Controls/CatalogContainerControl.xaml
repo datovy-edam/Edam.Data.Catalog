@@ -31,7 +31,7 @@
       <StackPanel Orientation="Horizontal" Background="White" BorderBrush="LightGray" BorderThickness="1"
                   Visibility="{x:Bind ViewModel.ContainerEditVisibility, Mode=TwoWay}" x:Name="ContainerEditor" >
         <TextBox x:Name="ContainerId" BorderBrush="Transparent" BorderThickness="0" Width="330"
-                 KeyUp="TextBox_KeyUp"/>
+                 KeyUp="ContainerIdTextBox_KeyUp"/>
         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE74E;" FontSize="16" Margin="0,0,8,0"
                   ToolTipService.ToolTip="Save" PointerPressed="SaveContainer_Click" />
         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE711;" FontSize="16" Margin="0"

@@ -22,7 +22,7 @@ public partial class MainViewModel : ObservableObject
         IOptions<AppConfig> appOptions,
         INavigator navigator)
     {
-        Title = "Sample App";
+        Title = "Catalog Explorer";
 
         _UiScope = new AppModelState()
         {
