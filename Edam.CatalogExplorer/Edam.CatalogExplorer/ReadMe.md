@@ -5,10 +5,16 @@ the Edam.Data.Catalog (DB and Model) libraries.
 
 The main objective is to have a Catalog of items such as folders and files that
 will work both in Windows or a Browser (WebApplication) with the minimum
-dependencies to other external (paid) services.  The (TO-BE) Catalog Services
-API will include all the expected functionality to allow access to file and
-folders for EDAM Projects but still these services should be independent and its
+dependencies to other external (paid) services.  The Catalog Services
+API include all the expected functionality to allow access to file and
+folders for EDAM Projects but still these services are independent and its
 functionality applicable to any application.
+
+## Dependencies
+
+As of this post the Catalog Explorer is dependent on the `Edam.Common` and
+`Edam.UI.Common` libraries that provides generic or common application functionality
+such as Diagnostics results log and others.
 
 ## Catalog Explorer Console (Solution)
 The solution and project can be found in:

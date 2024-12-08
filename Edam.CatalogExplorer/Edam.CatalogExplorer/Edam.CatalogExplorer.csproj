@@ -52,6 +52,7 @@
     <PackageReference Include="Uno.Extensions.Navigation" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Edam.UI\Edam.UI.Common\Edam.UI.Common\Edam.UI.Common.csproj" />
     <ProjectReference Include="..\..\Edam.Data.CatalogDb\Edam.Data.CatalogDb.csproj" />
     <ProjectReference Include="..\..\Edam.Data.CatalogModel\Edam.Data.CatalogModel.csproj" />
     <ProjectReference Include="..\Edam.UI.Catalog\Edam.UI.CatalogExplorer.csproj" />

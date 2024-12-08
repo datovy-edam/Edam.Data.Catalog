@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edam.Data.CatalogServiceCli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonacoEditor", "..\MonacoEditor\MonacoEditor.csproj", "{87199BA1-12DC-40B5-90F5-FFF8A1F4598C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edam.UI.Common", "..\..\Edam.UI\Edam.UI.Common\Edam.UI.Common\Edam.UI.Common.csproj", "{DDB08324-E835-4A57-A9F4-F5789815187D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{87199BA1-12DC-40B5-90F5-FFF8A1F4598C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87199BA1-12DC-40B5-90F5-FFF8A1F4598C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87199BA1-12DC-40B5-90F5-FFF8A1F4598C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDB08324-E835-4A57-A9F4-F5789815187D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDB08324-E835-4A57-A9F4-F5789815187D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDB08324-E835-4A57-A9F4-F5789815187D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDB08324-E835-4A57-A9F4-F5789815187D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +70,7 @@ Global
 		{3C14DF8D-5E8B-4E24-8EF9-9AB94CA0FF89} = {9CB78581-F085-489F-BA49-E066B087830C}
 		{2DB12375-2479-400B-BEBE-4131F9908F0B} = {9CB78581-F085-489F-BA49-E066B087830C}
 		{87199BA1-12DC-40B5-90F5-FFF8A1F4598C} = {9CB78581-F085-489F-BA49-E066B087830C}
+		{DDB08324-E835-4A57-A9F4-F5789815187D} = {9CB78581-F085-489F-BA49-E066B087830C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1CB0C364-E1AA-4A0E-ADFD-B2B6EA53B292}

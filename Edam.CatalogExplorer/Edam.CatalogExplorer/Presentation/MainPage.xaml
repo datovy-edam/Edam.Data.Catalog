@@ -6,19 +6,34 @@
       xmlns:uen="using:Uno.Extensions.Navigation.UI"
       xmlns:utu="using:Uno.Toolkit.UI"
       xmlns:um="using:Uno.Material"
+      xmlns:diag="using:Edam.UI.Common.Controls.Diagnostics"
       NavigationCacheMode="Required"
       Background="{ThemeResource BackgroundBrush}"
       DataContextChanged="Page_DataContextChanged">
-    <Grid >
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
         <utu:NavigationBar Content="{Binding Title}" Grid.Row="0">
 
         </utu:NavigationBar>
 
-        <cat:CatalogPanelControl x:Name="CatalogPanel" Grid.Row="1" />
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            
+            <cat:CatalogPanelControl x:Name="CatalogPanel" Grid.Row="0" Grid.Column="0" />
+            <diag:DiagnosticsLogSidePanel Grid.Row="0" Grid.Column="1" />
+        </Grid>
     </Grid>
 </Page>

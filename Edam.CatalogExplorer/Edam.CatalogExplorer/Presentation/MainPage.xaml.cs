@@ -8,7 +8,7 @@ public sealed partial class MainPage : Page
     {
         this.InitializeComponent();
     }
-
+    
     private void Page_DataContextChanged(
         FrameworkElement sender, DataContextChangedEventArgs args)
     {
