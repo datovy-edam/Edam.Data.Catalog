@@ -6,7 +6,6 @@
       xmlns:uen="using:Uno.Extensions.Navigation.UI"
       xmlns:utu="using:Uno.Toolkit.UI"
       xmlns:um="using:Uno.Material"
-      xmlns:diag="using:Edam.UI.Common.Controls.Diagnostics"
       NavigationCacheMode="Required"
       Background="{ThemeResource BackgroundBrush}"
       DataContextChanged="Page_DataContextChanged">
@@ -33,7 +32,6 @@
             </Grid.ColumnDefinitions>
             
             <cat:CatalogPanelControl x:Name="CatalogPanel" Grid.Row="0" Grid.Column="0" />
-            <diag:DiagnosticsLogSidePanel Grid.Row="0" Grid.Column="1" />
         </Grid>
     </Grid>
 </Page>

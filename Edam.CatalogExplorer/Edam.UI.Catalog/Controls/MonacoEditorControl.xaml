@@ -10,7 +10,10 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-  <Grid>
-    <monaco:MonacoEditor Grid.Row="1" x:Name="Editor" />
-  </Grid>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Frame Grid.Row="0" x:Name="EditorFrame" />
+    </Grid>
 </UserControl>

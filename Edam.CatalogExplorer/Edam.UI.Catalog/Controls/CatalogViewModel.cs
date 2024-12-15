@@ -42,7 +42,7 @@ public class CatalogViewModel
     /// <param name="path"></param>
     /// <param name="payload"></param>
     /// <returns></returns>
-    public async Task<ItemDataInfo> PostItem(string path, byte[] payload)
+    public async Task<ItemDataInfo> PostItemAsync(string path, byte[] payload)
     {
         ItemDataInfo? itemData = null;
         CatalogTreeBuilder builder =
@@ -54,6 +54,18 @@ public class CatalogViewModel
             var rItem = await Catalog.CatalogService.AddItemAsync(itemData);
         }
         return itemData;
+    }
+
+    /// <summary>
+    /// Post Item.
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="payload"></param>
+    /// <returns></returns>
+    public async Task<ItemDataInfo> PostItemAsync(string path, string payload)
+    {
+        byte[] bytes = Encoding.ASCII.GetBytes(payload);
+        return await PostItemAsync(path, bytes);
     }
 
     /// <summary>

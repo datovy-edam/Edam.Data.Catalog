@@ -93,6 +93,7 @@ public class CatalogExplorerViewModel : ObservableObject
             ItemContentNotificationArgs args =
                 new ItemContentNotificationArgs(
                     ItemContentNotificationType.SetContent, item);
+            args.Catalog = CatalogBase;
             await NotifyEventAsync(this, args);
         }
     }

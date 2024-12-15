@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Edam.Data.CatalogModel;
 using Edam.Diagnostics;
+using Edam.UI.Catalog.Controls;
 
 namespace Edam.UI.Catalog.Models;
 
@@ -17,6 +18,7 @@ public enum ItemContentNotificationType
 
 public class ItemContentNotificationArgs
 {
+    public CatalogViewModel? Catalog { get; set; } = null;
     public IResultsLog Results { get; set; } = new ResultLog();
     public ItemContentNotificationType Type { get; set; } =
         ItemContentNotificationType.Unknown;

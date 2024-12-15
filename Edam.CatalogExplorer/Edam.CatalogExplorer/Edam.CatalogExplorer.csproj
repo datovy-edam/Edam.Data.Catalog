@@ -1,6 +1,6 @@
 <Project Sdk="Uno.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net8.0-windows10.0.26100;net8.0-browserwasm</TargetFrameworks>
+    <TargetFrameworks>net8.0-windows10.0.26100;net8.0-browserwasm;net8.0</TargetFrameworks>
 
     <OutputType>Exe</OutputType>
     <UnoSingleProject>true</UnoSingleProject>
@@ -52,9 +52,9 @@
     <PackageReference Include="Uno.Extensions.Navigation" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Edam.UI\Edam.UI.Common\Edam.UI.Common\Edam.UI.Common.csproj" />
     <ProjectReference Include="..\..\Edam.Data.CatalogDb\Edam.Data.CatalogDb.csproj" />
     <ProjectReference Include="..\..\Edam.Data.CatalogModel\Edam.Data.CatalogModel.csproj" />
+    <ProjectReference Include="..\..\MonacoEditor\MonacoEditor.csproj" />
     <ProjectReference Include="..\Edam.UI.Catalog\Edam.UI.CatalogExplorer.csproj" />
   </ItemGroup>
   <ItemGroup>

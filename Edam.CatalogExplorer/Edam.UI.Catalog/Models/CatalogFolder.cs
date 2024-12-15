@@ -33,7 +33,7 @@ public class CatalogFolder
         {
             byte[] b = new byte[buffer.Length];
             dataReader.ReadBytes(b);
-            await _Catalog.PostItem(path, b);
+            await _Catalog.PostItemAsync(path, b);
         }
     }
 

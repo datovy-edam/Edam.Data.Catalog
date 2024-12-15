@@ -14,11 +14,13 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
+using Monaco;
 
 namespace Edam.UI.Catalog.Controls;
 
 public sealed partial class MonacoEditorControl : UserControl
 {
+
     private MonacoEditorViewModel _ViewModel = new MonacoEditorViewModel();
     public MonacoEditorViewModel ViewModel
     {
@@ -28,18 +30,60 @@ public sealed partial class MonacoEditorControl : UserControl
     public MonacoEditorControl()
     {
         this.InitializeComponent();
-        Editor.SetEditorMiniMapVisible(false);
+        this.DataContext = _ViewModel;
     }
 
-    public async Task<string> GetContent()
+    /// <summary>
+    /// Initialize Editor Control by creating an instance if it don't exists,
+    /// setting some properties and its view model that contains the content to
+    /// be edited, and finally setup the Frame place holder with the instance.
+    /// </summary>
+    /// <param name="model">editor view model</param>
+    /// <returns>task is returned</returns>
+    public async Task InitializeEditorControlAsync(MonacoEditorViewModel model)
     {
-        return await Editor.GetEditorContentAsync();
+        if (ViewModel.EditorInstance == null)
+        {
+            ViewModel.EditorInstance = await EditorPool.GetEditorInstance();
+            ViewModel.EditorInstance.SetEditorMiniMapVisible(false);
+            ViewModel.EditorInstance.MonacoEditorLoaded += EditorLoadedAsync;
+            ViewModel.EditorInstance.Tag = model;
+
+            model.EditorInstance = ViewModel.EditorInstance;
+            EditorFrame.Content = ViewModel.EditorInstance as Control;
+        }
     }
 
-    public async Task SetEditor(string language, string content)
+    /// <summary>
+    /// User Control (Editor) Loaded event to set the content to be edited.
+    /// </summary>
+    /// <param name="sender">sender</param>
+    /// <param name="e">event args</param>
+    public async void EditorLoadedAsync(object sender, EventArgs e)
+    {
+        ViewModel.EditorInstance.CreateModelAsync(
+            _ViewModel.Content, _ViewModel.CurrentLanguage);
+    }
+
+    /// <summary>
+    /// Set the content to be edited.
+    /// </summary>
+    /// <param name="content">content to be edited</param>
+    /// <param name="language">content language</param>
+    /// <returns>task is returned</returns>
+    public async Task SetEditorAsync(string content, string language)
     {
         _ViewModel.CurrentLanguage = language;
-        await Editor.SetLanguageAsync(language);
-        await Editor.LoadContentAsync(content);
+        ViewModel.EditorInstance.CreateModelAsync(content, language);
     }
+
+    /// <summary>
+    /// Get edited content.
+    /// </summary>
+    /// <returns>task with the string that was edited is returned</returns>
+    public async Task<string> GetContentAsync()
+    {
+        return await _ViewModel.EditorInstance.GetEditorContentAsync();
+    }
+
 }

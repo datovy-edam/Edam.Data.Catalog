@@ -26,8 +26,8 @@ namespace Edam.UI.Catalog.Controls;
 public sealed partial class EditorTabsControl : UserControl
 {
     private int _counter = 0;
-    private Monaco.MonacoEditor _MonacoEditor;
-    private MonacoEditorPage _SelectedEditor;
+    private MonacoEditorControl _MonacoEditor;
+    private MonacoEditorControl _SelectedEditor;
     private EditorTabsViewModel _viewModel = new EditorTabsViewModel();
     public EditorTabsViewModel ViewModel
     {
@@ -71,7 +71,7 @@ public sealed partial class EditorTabsControl : UserControl
         switch (args.Type)
         {
             case ItemContentNotificationType.GetContent:
-                args.ItemContent.Content = await _SelectedEditor.GetContent();
+                args.ItemContent.Content = await _SelectedEditor.GetContentAsync();
                 args.Results.Succeeded();
                 break;
             case ItemContentNotificationType.SetContent:
@@ -87,22 +87,54 @@ public sealed partial class EditorTabsControl : UserControl
         }
     }
 
+    /// <summary>
+    /// Add Tab...
+    /// </summary>
+    /// <param name="item"></param>
+    /// <param name="content"></param>
     private void AddTab(CatalogPathItem item, string content)
     {
-        MonacoEditorViewModel model = new MonacoEditorViewModel();
-        model.CurrentPathItem = item;
-        model.Content = content;
-        model.DocumentName = item.TreeItem.Title;
+        MonacoEditorViewModel model = new MonacoEditorViewModel
+        {
+            CurrentPathItem = item,
+            Content = content,
+            DocumentName = item.TreeItem.Title,
+            ModelIndex = _counter
+        };
+
         ViewModel.EditorTabs.Add(model);
         EditorTabs.SelectedItem = model;
-        model.ModelIndex = _counter;
         _counter++;
     }
 
-    private void TabView_TabCloseRequested(
+    /// <summary>
+    /// Close Editor while saving its content if it has changed.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private async void TabView_TabCloseRequested(
         TabView sender, TabViewTabCloseRequestedEventArgs args)
     {
-        sender.TabItems.Remove(args.Tab);
+        string tbLabel = "Tab [" + ViewModel.CurrentPathItem.Full + "]";
+        string func = nameof(EditorTabsControl) + "::TabCloseRequest";
+        MonacoEditorViewModel model = 
+            ViewModel.EditorTabs[EditorTabs.SelectedIndex];
+
+        // try to remove the tab... as a re
+        var done = ViewModel.EditorTabs.Remove(model);
+        //done = done ? sender.TabItems.Remove(args.Tab) : done;
+        if (!done)
+        {
+            ResultLog.Trace(tbLabel + " was not removed...", func,
+                SeverityLevel.Fatal);
+            return;
+        }
+        else
+        {
+            done = await ViewModel.UpdateModel(model);
+        }
+
+        ResultLog.Trace(tbLabel + " was removed...", func, SeverityLevel.Info);
     }
 
     private void TabView_SizeChanged(object sender, SizeChangedEventArgs args)
@@ -111,14 +143,16 @@ public sealed partial class EditorTabsControl : UserControl
         EditorTabs.Height = asize;
     }
 
-    private void MonacoEditor_Loaded(object sender, RoutedEventArgs e)
+    private async void MonacoEditor_Loaded(object sender, RoutedEventArgs e)
     {
         var model = EditorTabs.SelectedItem as MonacoEditorViewModel;
-        var editor = sender as Monaco.MonacoEditor;
-        if (editor == null || editor.Tag == null)
+        var editorControl = sender as MonacoEditorControl;
+        if (editorControl != null && editorControl.Tag == null)
         {
-            _MonacoEditor = editor;
+            model.EditorInstance = editorControl.ViewModel.EditorInstance;
+            _MonacoEditor = editorControl;
             _MonacoEditor.Tag = model;
+            await editorControl.InitializeEditorControlAsync(model);
         }
     }
 

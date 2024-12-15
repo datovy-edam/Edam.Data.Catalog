@@ -24,6 +24,19 @@ public class WebAppService : IDisposable
    }
 
    /// <summary>
+   /// For the meanwhile all sessionId's will be accepted. At a later time a
+   /// Session will be registered, monitored, and its lifecycle managed until is
+   /// not used, retired, or expire.
+   /// </summary>
+   /// <param name="sessionId">session Id</param>
+   /// <returns>true if the session is valid</returns>
+   public static bool VerifySessionId(string sessionId)
+   {
+      return true;
+      //return _sessionId != sessionId;
+   }
+
+   /// <summary>
    /// If needed setup session ID.
    /// </summary>
    /// <param name="sessionId"></param>

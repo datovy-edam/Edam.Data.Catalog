@@ -76,7 +76,7 @@ app.MapGet("/catalogservice/container/item/root/id", (
 app.MapGet("/catalogservice/container/list", (string sessionId) =>
 {
    WebAppService.SetupSession(sessionId);
-   if (sessionId != WebAppService.SessionId)
+   if (!WebAppService.VerifySessionId(sessionId))
    {
       return new List<ContainerInfo>();
    }
@@ -88,7 +88,7 @@ app.MapGet("/catalogservice/container/enlist", (
    string sessionId, string containerId, string description) =>
 {
    WebAppService.SetupSession(sessionId);
-   if (sessionId != WebAppService.SessionId)
+   if (!WebAppService.VerifySessionId(sessionId))
    {
       return new ContainerInfo();
    }
@@ -102,7 +102,7 @@ app.MapGet("/catalogservice/container/delist", (
    string? status = null) =>
 {
    WebAppService.SetupSession(sessionId);
-   if (sessionId != WebAppService.SessionId)
+   if (!WebAppService.VerifySessionId(sessionId))
    {
       return new ContainerInfo();
    }
@@ -118,7 +118,7 @@ app.MapPost("/catalogservice/catalog/item", (
 {
    string ritem = null;
    WebAppService.SetupSession(sessionId);
-   //if (sessionId != WebAppService.SessionId)
+   //if (!WebAppService.VerifySessionId(sessionId))
    //{
    //   return null;
    //}
@@ -134,7 +134,7 @@ app.MapGet("/catalogservice/catalog/item/id", (
 {
    string ritem = null;
    WebAppService.SetupSession(sessionId);
-   //if (sessionId != WebAppService.SessionId)
+   //if (!WebAppService.VerifySessionId(sessionId))
    //{
    //   return null;
    //}
@@ -150,7 +150,7 @@ app.MapGet("/catalogservice/catalog/item/path", (
 {
    string ritem = null;
    WebAppService.SetupSession(sessionId);
-   //if (sessionId != WebAppService.SessionId)
+   //if (!WebAppService.VerifySessionId(sessionId))
    //{
    //   return null;
    //}
@@ -166,7 +166,7 @@ app.MapDelete("/catalogservice/catalog/item/id", (
 {
    string ritem = null;
    WebAppService.SetupSession(sessionId);
-   //if (sessionId != WebAppService.SessionId)
+   //if (!WebAppService.VerifySessionId(sessionId))
    //{
    //   return null;
    //}
@@ -197,7 +197,7 @@ app.MapGet("/catalogservice/catalog/branch/items", (
 {
    string ritem = null;
    WebAppService.SetupSession(sessionId);
-   //if (sessionId != WebAppService.SessionId)
+   //if (!WebAppService.VerifySessionId(sessionId))
    //{
    //   return null;
    //}
@@ -216,7 +216,7 @@ app.MapPost("/catalogservice/catalog/data/item", (
 {
    string ritem = null;
    WebAppService.SetupSession(sessionId);
-   //if (sessionId != WebAppService.SessionId)
+   //if (!WebAppService.VerifySessionId(sessionId))
    //{
    //   return null;
    //}
@@ -232,7 +232,7 @@ app.MapGet("/catalogservice/catalog/data/items/id", (
 {
    string ritem = null;
    WebAppService.SetupSession(sessionId);
-   //if (sessionId != WebAppService.SessionId)
+   //if (!WebAppService.VerifySessionId(sessionId))
    //{
    //   return null;
    //}
@@ -248,7 +248,7 @@ app.MapGet("/catalogservice/catalog/data/item/name", (
 {
    string ritem = null;
    WebAppService.SetupSession(sessionId);
-   //if (sessionId != WebAppService.SessionId)
+   //if (!WebAppService.VerifySessionId(sessionId))
    //{
    //   return null;
    //}
@@ -265,7 +265,7 @@ app.MapGet("/catalogservice/catalog/data/item/id", (
 {
    string ritem = null;
    WebAppService.SetupSession(sessionId);
-   //if (sessionId != WebAppService.SessionId)
+   //if (!WebAppService.VerifySessionId(sessionId))
    //{
    //   return null;
    //}
@@ -282,7 +282,7 @@ app.MapDelete("/catalogservice/catalog/data/item/id", (
 {
    string ritem = null;
    WebAppService.SetupSession(sessionId);
-   //if (sessionId != WebAppService.SessionId)
+   //if (!WebAppService.VerifySessionId(sessionId))
    //{
    //   return null;
    //}
@@ -309,7 +309,7 @@ app.MapDelete("/catalogservice/catalog/data/id", (
    string sessionId, Guid id) =>
 {
    WebAppService.SetupSession(sessionId);
-   //if (sessionId != WebAppService.SessionId)
+   //if (!WebAppService.VerifySessionId(sessionId))
    //{
    //   return null;
    //}
@@ -339,7 +339,7 @@ app.MapGet("/catalogservice/catalog/content/type/id", (
    string sessionId, string contentTypeId) =>
 {
    WebAppService.SetupSession(sessionId);
-   //if (sessionId != WebAppService.SessionId)
+   //if (!WebAppService.VerifySessionId(sessionId))
    //{
    //   return null;
    //}

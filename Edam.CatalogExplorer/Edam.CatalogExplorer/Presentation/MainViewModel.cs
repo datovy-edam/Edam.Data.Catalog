@@ -22,6 +22,9 @@ public partial class MainViewModel : ObservableObject
         IOptions<AppConfig> appOptions,
         INavigator navigator)
     {
+        // force pool initiation...
+        Monaco.EditorPool.AvailablePools();
+
         Title = "Catalog Explorer";
 
         _UiScope = new AppModelState()

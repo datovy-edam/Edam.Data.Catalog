@@ -13,10 +13,16 @@ using System.Threading.Tasks;
 using System.Web;
 using Windows.ApplicationModel.DataTransfer;
 
+using Edam.Diagnostics;
+using static System.Net.Mime.MediaTypeNames;
+
 namespace Monaco;
 
 public sealed partial class MonacoEditor : UserControl, IMonacoEditor, IMonacoCore
 {
+
+   #region Editor Properties and Fields Initialization
+
    private const string HTML_LAUNCH_FILE = @"Monaco\monaco-editor\index.html";
 
    /// <summary>
@@ -44,6 +50,8 @@ public sealed partial class MonacoEditor : UserControl, IMonacoEditor, IMonacoCo
    /// 
    /// </summary>
    private List<IMonacoHandler> _registeredHandlers = new();
+
+   #endregion
 
    #region PropertyChanged Event
 
@@ -77,6 +85,10 @@ public sealed partial class MonacoEditor : UserControl, IMonacoEditor, IMonacoCo
    {
       if (MonacoEditorWebView.CoreWebView2 != null)
       {
+         //string text = (content.ReplaceLineEndings()).
+         //   Replace("\r", "\\r").Replace("\n", "\\n").Replace("\t", "\\t").
+         //   Replace("'", "\\u0027");
+
          string ensuredContent = HttpUtility.JavaScriptStringEncode(content);
          this._content = ensuredContent;
 
@@ -88,7 +100,7 @@ public sealed partial class MonacoEditor : UserControl, IMonacoEditor, IMonacoCo
          }
          catch (Exception ex)
          {
-
+            ResultLog.Trace(ex, "MonacoEditor.LoadContent");
          }
       }
    }
@@ -326,18 +338,33 @@ public sealed partial class MonacoEditor : UserControl, IMonacoEditor, IMonacoCo
 
    #region Editor Core
 
-   private bool _ModelIsInitialized = false;
    public MonacoEditor()
    {
       this.InitializeComponent();
+   }
+
+   public async Task InitializeControlAsync()
+   {
+      //if (MonacoEditorWebView.CoreWebView2 != null)
+      //{
+      //   return;
+      //}
 
       this.Loaded += MonacoEditorParentView_Loaded;
-      InitializeEditor();
+
+      try
+      {
+         await InitializeEditorAsync();
+      }
+      catch (Exception ex)
+      {
+         ResultLog.Trace(ex, "MonacoEditor:Constructure");
+      }
 
       MonacoEditorWebView.NavigationCompleted += WebView_NavigationCompleted;
    }
 
-   private async void InitializeEditor()
+   private async Task InitializeEditorAsync()
    {
       /*
       // LOAD ALL FROM WHOLE APP
@@ -369,26 +396,23 @@ public sealed partial class MonacoEditor : UserControl, IMonacoEditor, IMonacoCo
       // load launch html file
       string monacoHtmlFile = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, HTML_LAUNCH_FILE);
       this.MonacoEditorWebView.Source = new Uri(monacoHtmlFile);
-
    }
 
-   public async Task InitializeEditorModel()
+   public async Task InitializeEditorModelAsync()
    {
-      if (!_ModelIsInitialized)
+      var model = this.Tag as IMonacoEditorModel;
+      if (model != null)
       {
-         var model = this.Tag as IMonacoEditorModel;
-         if (model != null)
-         {
-            await LoadContentAsync(model.Content);
-            await SetLanguageAsync(model.CurrentLanguage);
-            _ModelIsInitialized = true;
-         }
+
+         //await LoadContentAsync(model.Content);
+         //await SetLanguageAsync(model.CurrentLanguage);
+         await CreateModelAsync(model.Content, model.CurrentLanguage);
       }
    }
 
    private void MonacoEditorParentView_Loaded(object sender, RoutedEventArgs e)
    {
-      InitializeEditorModel();
+      InitializeEditorModelAsync();
    }
 
    private void CoreWebView2_WebMessageReceived(CoreWebView2 sender, CoreWebView2WebMessageReceivedEventArgs args)
@@ -435,11 +459,11 @@ public sealed partial class MonacoEditor : UserControl, IMonacoEditor, IMonacoCo
    {
       LoadCompleted = true;
       _ = this.SetThemeAsync(this.EditorTheme);
-      _ = this.SetLanguageAsync(this.EditorLanguage);
+      //_ = this.SetLanguageAsync(this.EditorLanguage);
 
       await this.RegisterContentChangingEvent();
 
-      InitializeEditorModel();
+      InitializeEditorModelAsync();
    }
 
    private async Task RegisterContentChangingEvent()
@@ -509,6 +533,32 @@ public sealed partial class MonacoEditor : UserControl, IMonacoEditor, IMonacoCo
    }
 
    /// <inheritdoc />
+   public async Task CreateModelAsync(string content, string languageId)
+   {
+      if (MonacoEditorWebView.CoreWebView2 != null)
+      {
+         CurrentCodeLanguage = languageId;
+
+         string ensuredContent = HttpUtility.JavaScriptStringEncode(content);
+         this._content = ensuredContent;
+
+         string command = $"editor.setModel(monaco.editor.createModel('{ensuredContent}', '{languageId}'));";
+
+         try
+         {
+            await this.MonacoEditorWebView.ExecuteScriptAsync(command);
+
+            // Reset the change content event
+            await this.RegisterContentChangingEvent();
+         }
+         catch (Exception ex)
+         {
+            ResultLog.Trace(ex, "MonacoEditor.LoadContent");
+         }
+      }
+   }
+
+   /// <inheritdoc />
    public async Task SetLanguageAsync(string languageId)
    {
       if (MonacoEditorWebView.CoreWebView2 != null)
@@ -525,12 +575,14 @@ public sealed partial class MonacoEditor : UserControl, IMonacoEditor, IMonacoCo
          }
          catch (Exception ex)
          {
-
+            ResultLog.Trace(ex, "MonacoEditor.LoadContent");
          }
       }
    }
 
    #endregion
+
+   #region Editor Support
 
    public void SetEditorMiniMapVisible(bool status = false)
    {
@@ -681,4 +733,7 @@ public sealed partial class MonacoEditor : UserControl, IMonacoEditor, IMonacoCo
       string command = "editor.setScrollPosition({scrollTop: 0});";
       this.MonacoEditorWebView.ExecuteScriptAsync(command);
    }
+
+   #endregion
+
 }

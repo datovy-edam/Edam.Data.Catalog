@@ -33,6 +33,7 @@ public sealed partial class CatalogExplorerControl : UserControl
     {
         this.InitializeComponent();
         DataContext = _ViewModel;
+
     }
 
     private void TreeView_SelectionChanged(

@@ -102,11 +102,16 @@ public class CatalogClient : ICatalogClient, ICatalogService
       }
 
       _resultsLog.Clear();
-      _lastSessionId = sessionId;
+      if (String.IsNullOrWhiteSpace(_lastSessionId) &&
+         !String.IsNullOrWhiteSpace(sessionId))
+      {
+         _lastSessionId = sessionId;
+      }
+
       _client = new WebApiClient(_httpRequestInfo);
 
       QueryStringBuilder pars = new QueryStringBuilder();
-      pars.Add(QueryStringTag.SessionId, sessionId);
+      pars.Add(QueryStringTag.SessionId, _lastSessionId);
       pars.Add(TAG_CONTAINER_ID, containerId);
       ContainerInfo? container = null;
 

@@ -1,6 +1,6 @@
 <Project Sdk="Uno.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net8.0-windows10.0.19041;net8.0-browserwasm</TargetFrameworks>
+    <TargetFrameworks>net8.0-windows10.0.19041;net8.0-browserwasm;net8.0</TargetFrameworks>
     <UnoSingleProject>true</UnoSingleProject>
     <OutputType>Library</OutputType>
     <!-- Ensures the .xr.xml files are generated in a proper layout folder -->
@@ -40,5 +40,11 @@
       <Content Include="Monaco\monaco-editor\**">
          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+   </ItemGroup>
+
+   <ItemGroup>
+     <Reference Include="Edam.Common">
+       <HintPath>..\..\Edam.Common\Edam.Common\bin\Debug\net8.0\Edam.Common.dll</HintPath>
+     </Reference>
    </ItemGroup>
 </Project>

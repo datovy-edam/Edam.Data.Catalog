@@ -87,6 +87,13 @@ public class MonacoEditorViewModel : ObservableObject, IMonacoEditorModel
         }
     }
 
+    private Monaco.MonacoEditor _EditorInstance;
+    public Monaco.MonacoEditor EditorInstance
+    {
+        get => _EditorInstance;
+        set => _EditorInstance = value;
+    }
+
     public MonacoEditorViewModel()
     {
         DocumentName = EMPTY_DOCUMENT_NAME;
@@ -101,6 +108,11 @@ public class MonacoEditorViewModel : ObservableObject, IMonacoEditorModel
         //    if ()
         //    Languages.Add(item);
         //}
+    }
+
+    public async Task<string> GetContentAsync()
+    {
+        return await _EditorInstance.GetEditorContentAsync();
     }
 }
 

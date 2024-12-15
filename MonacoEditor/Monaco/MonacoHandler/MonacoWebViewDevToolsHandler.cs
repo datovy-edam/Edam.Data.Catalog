@@ -7,6 +7,6 @@ public class MonacoWebViewDevToolsHandler : MonacoBaseHandler, IMonacoHandler
     /// </summary>
     public void OpenDebugWebViewDeveloperTools()
     {
-        this.WebView!.CoreWebView2.OpenDevToolsWindow();
+        //this.WebView!.CoreWebView2.OpenDevToolsWindow();
     }
 }
