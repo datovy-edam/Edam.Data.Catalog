@@ -49,6 +49,11 @@ public class EditorTabsViewModel
                     severity = SeverityLevel.Fatal;
                 }
             }
+            else
+            {
+                feedback = " Catalog Services interface was not found...";
+                severity = SeverityLevel.Fatal;
+            }
         }
         else
         {

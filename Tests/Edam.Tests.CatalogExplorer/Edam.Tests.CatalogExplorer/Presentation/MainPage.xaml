@@ -1,0 +1,15 @@
+﻿<Page x:Class="Edam.Tests.CatalogExplorer.Presentation.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="using:Edam.Tests.CatalogExplorer.Presentation"
+      xmlns:uen="using:Uno.Extensions.Navigation.UI"
+      xmlns:utu="using:Uno.Toolkit.UI"
+      xmlns:um="using:Uno.Material"
+      xmlns:monaco="using:Monaco"
+      NavigationCacheMode="Required"
+      Loaded="Page_Loaded"
+      Background="{ThemeResource BackgroundBrush}">
+    <Grid utu:SafeArea.Insets="VisibleBounds" BorderBrush="Gray" BorderThickness="6">
+        <monaco:MonacoEditor x:Name="Editor" />
+    </Grid>
+</Page>
