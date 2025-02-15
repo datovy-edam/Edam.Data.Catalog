@@ -1,0 +1,45 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35728.132
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edam.CatalogExplorer", "Edam.CatalogExplorer\Edam.CatalogExplorer.csproj", "{95DAE323-0898-4BCF-80A7-1A2F4AD3B810}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{80E6AE86-F6A3-4D7B-B96F-E323285DCFB2}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+		Directory.Packages.props = Directory.Packages.props
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonacoEditor", "Monaco\MonacoEditor\MonacoEditor.csproj", "{55014D35-4874-427B-9FC5-11C10E4BCE66}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edam.UI.CatalogExplorer", "Edam.UI.CatalogExplorer\Edam.UI.CatalogExplorer.csproj", "{DCBD21E8-6673-4A62-A49F-3E211E944486}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{95DAE323-0898-4BCF-80A7-1A2F4AD3B810}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95DAE323-0898-4BCF-80A7-1A2F4AD3B810}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95DAE323-0898-4BCF-80A7-1A2F4AD3B810}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{95DAE323-0898-4BCF-80A7-1A2F4AD3B810}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95DAE323-0898-4BCF-80A7-1A2F4AD3B810}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95DAE323-0898-4BCF-80A7-1A2F4AD3B810}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{55014D35-4874-427B-9FC5-11C10E4BCE66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55014D35-4874-427B-9FC5-11C10E4BCE66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55014D35-4874-427B-9FC5-11C10E4BCE66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55014D35-4874-427B-9FC5-11C10E4BCE66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCBD21E8-6673-4A62-A49F-3E211E944486}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCBD21E8-6673-4A62-A49F-3E211E944486}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCBD21E8-6673-4A62-A49F-3E211E944486}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCBD21E8-6673-4A62-A49F-3E211E944486}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -34,9 +34,10 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" />
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.Primitives" />
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" />
     <PackageReference Include="CommunityToolkit.WinUI.Controls.Sizers" />
+    <PackageReference Include="Microsoft.Extensions.Localization" />
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="Uno.Extensions.Navigation" />
   </ItemGroup>
 
   <ItemGroup>
@@ -59,43 +60,31 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Controls\CatalogContainerControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-
-  <ItemGroup>
     <Page Update="Controls\CatalogExplorerControl.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
 
   <ItemGroup>
     <Page Update="Controls\CatalogPanelControl.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
 
   <ItemGroup>
     <Page Update="Controls\EditorTabsControl.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
 
   <ItemGroup>
     <Page Update="Controls\MonacoEditorControl.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Controls\MonacoEditorPage.xaml">
-      <SubType>Designer</SubType>
+    <Page Update="Controls\CatalogContainerControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
