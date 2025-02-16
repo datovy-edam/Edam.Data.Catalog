@@ -18,6 +18,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonacoEditor", "Monaco\Mona
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edam.UI.CatalogExplorer", "Edam.UI.CatalogExplorer\Edam.UI.CatalogExplorer.csproj", "{DCBD21E8-6673-4A62-A49F-3E211E944486}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edam.Data.CatalogDb", "Edam.Data.CatalogDb\Edam.Data.CatalogDb.csproj", "{C3526DF6-C610-4CA6-BEB6-CCA9968AEA55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edam.Data.CatalogModel", "Edam.Data.CatalogModel\Edam.Data.CatalogModel.csproj", "{F5E085F8-1A88-4419-9C08-1996D5E97EDE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edam.Data.CatalogServiceClient", "Edam.Data.CatalogServiceClient\Edam.Data.CatalogServiceClient.csproj", "{A8D716ED-E89E-44FE-9627-2D3C59F22816}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +44,18 @@ Global
 		{DCBD21E8-6673-4A62-A49F-3E211E944486}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCBD21E8-6673-4A62-A49F-3E211E944486}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCBD21E8-6673-4A62-A49F-3E211E944486}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3526DF6-C610-4CA6-BEB6-CCA9968AEA55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3526DF6-C610-4CA6-BEB6-CCA9968AEA55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3526DF6-C610-4CA6-BEB6-CCA9968AEA55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3526DF6-C610-4CA6-BEB6-CCA9968AEA55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5E085F8-1A88-4419-9C08-1996D5E97EDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5E085F8-1A88-4419-9C08-1996D5E97EDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5E085F8-1A88-4419-9C08-1996D5E97EDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5E085F8-1A88-4419-9C08-1996D5E97EDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8D716ED-E89E-44FE-9627-2D3C59F22816}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8D716ED-E89E-44FE-9627-2D3C59F22816}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8D716ED-E89E-44FE-9627-2D3C59F22816}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8D716ED-E89E-44FE-9627-2D3C59F22816}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

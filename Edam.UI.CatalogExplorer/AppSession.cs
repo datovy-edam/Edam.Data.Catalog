@@ -12,6 +12,7 @@ public class AppSession
 {
 
     public static Window Window { get; set; }
+    public static AppModelState ApplicationState { get; set; }
 
     /// <summary>
     /// Get File.

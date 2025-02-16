@@ -5,10 +5,10 @@ namespace Edam.CatalogExplorer.Presentation;
 
 public partial class MainViewModel : ObservableObject
 {
-    private AppModelState _UiScope;
-    public AppModelState UiScope
+    private static AppModelState _AppState;
+    public static AppModelState ApplicationState
     {
-        get { return _UiScope; }
+        get { return _AppState; }
     }
 
     private INavigator _navigator;
@@ -29,19 +29,14 @@ public partial class MainViewModel : ObservableObject
         _navigator = navigator;
         Title = "Catalog Explorer";
 
-        _UiScope = new AppModelState()
+        _AppState = new AppModelState()
         {
             Localizer = localizer,
             Navigator = navigator,
             AppOptions = appInfo
         };
+
+        AppSession.ApplicationState = _AppState;
     }
-
-    //public ICommand GoToSecond { get; }
-
-    //private async Task GoToSecondView()
-    //{
-    //    await _navigator.NavigateViewModelAsync<SecondViewModel>(this, data: new Entity(Name!));
-    //}
 
 }

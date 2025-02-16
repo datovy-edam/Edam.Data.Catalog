@@ -8,14 +8,21 @@
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
+    <PackageVersion Include="Azure.Identity" Version="1.13.2" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageVersion Include="CommunityToolkit.WinUI.Controls.Sizers" Version="8.1.240916" />
+    <PackageVersion Include="Google.Protobuf" Version="3.29.3" />
+    <PackageVersion Include="Grpc.Net.ClientFactory" Version="2.67.0" />
+    <PackageVersion Include="Grpc.Tools" Version="2.69.0" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="9.0.2" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Abstractions" Version="9.0.2" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.2" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.2" />
+    <PackageVersion Include="Microsoft.Extensions.ApiDescription.Client" Version="9.0.2" />
     <PackageVersion Include="Microsoft.Extensions.Localization" Version="9.0.2" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageVersion Include="NSwag.ApiDescription.Client" Version="14.2.0" />
+    <PackageVersion Include="System.Formats.Asn1" Version="9.0.2" />
     <PackageVersion Include="Uno.Extensions.Navigation" Version="5.2.7" />
   </ItemGroup>
 </Project>

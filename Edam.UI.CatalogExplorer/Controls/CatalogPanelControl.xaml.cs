@@ -81,6 +81,10 @@ public sealed partial class CatalogPanelControl : UserControl
     /// <param name="e"></param>
     private void UserControl_Loaded(object sender, RoutedEventArgs e)
     {
+        if (_ViewModel.State == null)
+        {
+            _ViewModel.State = AppSession.ApplicationState;
+        }
         InitializeCatalogAsync();
     }
 

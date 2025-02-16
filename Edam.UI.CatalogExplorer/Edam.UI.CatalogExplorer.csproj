@@ -41,21 +41,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Edam.Data.CatalogDb\Edam.Data.CatalogDb.csproj" />
+    <ProjectReference Include="..\Edam.Data.CatalogModel\Edam.Data.CatalogModel.csproj" />
+    <ProjectReference Include="..\Edam.Data.CatalogServiceClient\Edam.Data.CatalogServiceClient.csproj" />
     <ProjectReference Include="..\Monaco\MonacoEditor\MonacoEditor.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Edam.Common">
       <HintPath>..\..\Edam.Common\Edam.Common\bin\Debug\net8.0\Edam.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="Edam.Data.CatalogDb">
-      <HintPath>..\Edam.Data.CatalogDb\bin\Debug\net8.0\Edam.Data.CatalogDb.dll</HintPath>
-    </Reference>
-    <Reference Include="Edam.Data.CatalogModel">
-      <HintPath>..\Edam.Data.CatalogModel\bin\Debug\net8.0\Edam.Data.CatalogModel.dll</HintPath>
-    </Reference>
-    <Reference Include="Edam.Data.CatalogServiceClient">
-      <HintPath>..\Edam.Data.CatalogServiceClient\bin\Debug\net8.0\Edam.Data.CatalogServiceClient.dll</HintPath>
     </Reference>
   </ItemGroup>
 

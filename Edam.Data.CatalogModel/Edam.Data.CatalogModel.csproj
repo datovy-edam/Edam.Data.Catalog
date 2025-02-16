@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -7,7 +7,7 @@
     <PackageId>datovy.edam.data.catalog-model</PackageId>
     <Title>EDAM Data Catalog Model</Title>
     <Description>The Data Catalog library Data Model is used to support the Catalog related database to store definitions for containers, files, file-data and others tables/resources based on path entries, just like a file system.  This allows web-applications and services to have a simulated file-system that gets built as a Tree.  By using (like) file paths the representation of a file-system tree is defined.  This will be helpful to manage a Data Store of data files (binary, xml, json, or other) within Web / Blazor applications that will also can be used in desktop apps.</Description>
-    <PackageIcon>edam.logo - common.png</PackageIcon>
+    <PackageIcon></PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/datovy-edam/Edam.Data.Catalog</RepositoryUrl>
     <PackageTags>File System; Blazor Data Store; Catalog Tree</PackageTags>
@@ -17,8 +17,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <PackageReference Include="Newtonsoft.Json" />
   </ItemGroup>
 
   <ItemGroup>

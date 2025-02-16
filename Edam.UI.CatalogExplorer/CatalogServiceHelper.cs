@@ -1,15 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+// -----------------------------------------------------------------------------
 using Edam.Application;
 using Edam.Data.CatalogModel;
 using catDb = Edam.Data.CatalogDb;
 using catSrv = Edam.Data.CatalogServiceClient;
 using Edam.Diagnostics;
-using Windows.Storage.Pickers;
-using System.Runtime.CompilerServices;
 
 namespace Edam.UI.CatalogExplorer;
 
